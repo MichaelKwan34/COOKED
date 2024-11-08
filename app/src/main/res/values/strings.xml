@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">COOKED</string>
+    <string name="login_header">Login</string>
+    <string name="email_address_header">Email Address</string>
+    <string name="password_header">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="register">Register!</string>
+    <string name="saved_recipes_header">Saved Recipes</string>
+    <string name="shopping_list_header">Shopping List</string>
+    <string name="pantry_header">Pantry</string>
+</resources>
