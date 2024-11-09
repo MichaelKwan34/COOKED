@@ -1,4 +1,4 @@
-package com.example.cooked
+package com.group34.cooked
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

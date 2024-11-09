@@ -1,4 +1,4 @@
-package com.example.cooked
+package com.group34.cooked
 
 import android.content.Context
 import android.content.Intent

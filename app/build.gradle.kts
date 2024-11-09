@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cooked"
+    namespace = "com.group34.cooked"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.cooked"
+        applicationId = "com.group34.cooked"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
