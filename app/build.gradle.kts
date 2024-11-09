@@ -1,14 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.services)
 }
 
 android {
-    namespace = "com.example.cooked"
+    namespace = "com.group34.cooked"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.cooked"
+        applicationId = "com.group34.cooked"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -36,7 +37,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -45,4 +45,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore.ktx)
 }

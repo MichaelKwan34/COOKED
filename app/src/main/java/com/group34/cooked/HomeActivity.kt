@@ -1,17 +1,16 @@
-package com.example.cooked
+package com.group34.cooked
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import com.example.cooked.fragments.BrowseFragment
-import com.example.cooked.fragments.HomeFragment
-import com.example.cooked.fragments.ProfileFragment
-import com.example.cooked.fragments.RecipesFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.tabs.TabLayoutMediator.TabConfigurationStrategy
-import java.util.ArrayList
+import com.group34.cooked.fragments.BrowseFragment
+import com.group34.cooked.fragments.HomeFragment
+import com.group34.cooked.fragments.ProfileFragment
+import com.group34.cooked.fragments.RecipesFragment
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
