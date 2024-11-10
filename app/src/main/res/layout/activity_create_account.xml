@@ -8,7 +8,7 @@
     android:paddingStart="25dp">
 
     <Button
-        android:id="@+id/back_authentication"
+        android:id="@+id/back_create_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back"
@@ -56,6 +56,7 @@
 
     <EditText
         android:id="@+id/password_create_account"
+        android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_edittext"
@@ -75,6 +76,7 @@
 
     <EditText
         android:id="@+id/confirm_password_create_account"
+        android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_edittext"
