@@ -22,13 +22,13 @@ class LoginActivity : AppCompatActivity() {
 
         var register = findViewById<Button>(R.id.register)
         register.setOnClickListener{
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, CreateAccountActivity::class.java)
             startActivity(intent)
         }
 
         var forgotPassword = findViewById<TextView>(R.id.forgot_password)
         forgotPassword.setOnClickListener{
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
     }

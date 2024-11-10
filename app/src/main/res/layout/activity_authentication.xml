@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#95DFAA"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:paddingStart="25dp">
+
+    <Button
+        android:id="@+id/back_authentication"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/two_factor_authentication"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/black"
+        android:paddingTop="40dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_digit_prompt"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:paddingTop="40dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        >
+
+        <EditText
+            android:id="@+id/first_code"
+            android:layout_width="50dp"
+            android:layout_height="65dp"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/second_code"
+            android:layout_width="50dp"
+            android:layout_height="65dp"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/third_code"
+            android:layout_width="50dp"
+            android:layout_height="65dp"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/forth_code"
+            android:layout_width="50dp"
+            android:layout_height="65dp"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/fifth_code"
+            android:layout_width="50dp"
+            android:layout_height="65dp"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/sixth_code"
+            android:layout_width="50dp"
+            android:layout_height="65dp"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/confirm_authentication"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm"
+        android:textSize="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="45dp"
+        />
+
+
+
+</LinearLayout>
