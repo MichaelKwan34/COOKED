@@ -50,8 +50,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-
     packaging {
         resources {
             excludes += setOf(
@@ -62,6 +60,9 @@ android {
                 "META-INF/DEPENDENCIES"
             )
         }
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 
