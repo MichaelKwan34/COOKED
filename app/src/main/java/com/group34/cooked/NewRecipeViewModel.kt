@@ -85,7 +85,7 @@ class NewRecipeViewModel : ViewModel() {
         _recipe.value = _recipe.value?.copy(creatorId = creatorId)
     }
 
-    fun setPhotoUrl(url: String) {
+    fun setPhotoUri(url: String) {
         _recipe.value = _recipe.value?.copy(photo = url)
     }
 
