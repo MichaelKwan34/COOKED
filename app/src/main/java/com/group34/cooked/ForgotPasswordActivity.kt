@@ -4,17 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class ForgotPasswordActivity : AppCompatActivity() {
     private lateinit var email: EditText
 
+    private lateinit var firebaseAuth : FirebaseAuth
+
+    private lateinit var verificationCode : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         email = findViewById(R.id.email_address_forgot_password)
 
@@ -28,10 +37,20 @@ class ForgotPasswordActivity : AppCompatActivity() {
         val resetPassword: Button = findViewById(R.id.reset_password)
         resetPassword.setOnClickListener {
             val isEmailValid = validateEmail(email, "Invalid email format")
+            val emailValue = email.text.toString()
 
             if (isEmailValid) {
-                val intent = Intent(this, AuthenticationActivity::class.java)
-                startActivity(intent)
+                firebaseAuth.sendPasswordResetEmail(emailValue).addOnCompleteListener{
+                    if (it.isSuccessful) {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        Toast.makeText(this, "Check your email to reset password", Toast.LENGTH_SHORT).show()
+                        startActivity(intent)
+
+                    } else {
+                        Toast.makeText(this, "Email address might be incorrect. Please try again", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

@@ -16,6 +16,6 @@
     <string name="reset_password">Reset Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="two_factor_authentication">Two-Factor\nAuthentication</string>
-    <string name="enter_digit_prompt">Enter the 6-digit code from your\nphone number.</string>
+    <string name="enter_digit_prompt">Enter the 6-digit code from your\nemail address.</string>
 
 </resources>
