@@ -18,4 +18,10 @@
     <string name="two_factor_authentication">Two-Factor\nAuthentication</string>
     <string name="enter_digit_prompt">Enter the 6-digit code from your\nemail address.</string>
 
+
+    <string-array name="difficulty_array">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
 </resources>

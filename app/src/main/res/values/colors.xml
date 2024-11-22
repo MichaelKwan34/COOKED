@@ -2,4 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#7CE2A5</color>
+    <color name="blueAccent">#51D6FF</color>
+    <color name="purpleAccent">#9951FF</color>
+    <color name="yellowAccent">#F1C644</color>
+    <color name="redAccent">#F14444</color>
+    <color name="danger">#f88b8b</color>
+
+    <color name="background">#F0F0F0</color>
+    <color name="backgroundDark">#D5D5D5</color>
+
+    <color name="textPrimary">#000000</color>
+    <color name="textForm">#686868</color>
+
+    <color name="focus">#7CE2A5</color>
 </resources>

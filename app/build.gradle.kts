@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -50,8 +51,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-
+    buildFeatures {
+        viewBinding = true
+    }
     packaging {
         resources {
             excludes += setOf(
@@ -62,6 +64,9 @@ android {
                 "META-INF/DEPENDENCIES"
             )
         }
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -76,10 +81,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.glide)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage)
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-
 }
