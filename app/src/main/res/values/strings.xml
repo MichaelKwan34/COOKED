@@ -10,4 +10,12 @@
     <string name="saved_recipes_header">Saved Recipes</string>
     <string name="shopping_list_header">Shopping List</string>
     <string name="pantry_header">Pantry</string>
+
+    <string name="back">BACK</string>
+    <string name="confirm">Confirm</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="two_factor_authentication">Two-Factor\nAuthentication</string>
+    <string name="enter_digit_prompt">Enter the 6-digit code from your\nemail address.</string>
+
 </resources>

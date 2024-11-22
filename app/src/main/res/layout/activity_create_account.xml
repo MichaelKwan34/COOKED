@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#95DFAA"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:paddingStart="25dp">
+
+    <Button
+        android:id="@+id/back_create_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create an Account"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/black"
+        android:paddingTop="40dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email_address_header"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:paddingTop="40dp"
+        />
+
+    <EditText
+        android:id="@+id/email_address_create_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/password_header"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        />
+
+    <EditText
+        android:id="@+id/password_create_account"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_password"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        />
+
+    <EditText
+        android:id="@+id/confirm_password_create_account"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        />
+
+
+
+
+
+
+    <Button
+        android:id="@+id/create_account_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Account"
+        android:textSize="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="45dp"
+        />
+
+
+
+</LinearLayout>
