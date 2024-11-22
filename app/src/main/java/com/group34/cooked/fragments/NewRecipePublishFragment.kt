@@ -49,8 +49,8 @@ class NewRecipePublishFragment : Fragment(R.layout.fragment_new_recipe_publish) 
 
             tvTitle.text = recipe.name
             tvServings.text = "Serves " + recipe.servings
-            lvIngredients.adapter = ListAdapter(requireContext(), recipe.ingredients)
-            lvInstructions.adapter = ListAdapter(requireContext(), recipe.instructions)
+            lvIngredients.adapter = ListAdapter(requireContext(), recipe.ingredients, isPublish = true)
+            lvInstructions.adapter = ListAdapter(requireContext(), recipe.instructions, isPublish = true)
         }
     }
 }

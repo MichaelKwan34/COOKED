@@ -31,7 +31,7 @@ class NewRecipeInstructionsFragment : Fragment(R.layout.fragment_new_recipe_inst
         // Shared view model with activity
         newRecipeViewModel = ViewModelProvider(requireActivity())[NewRecipeViewModel::class.java]
 
-        val instructionListAdapter = ListAdapter(requireContext(), arrayListOf<Instruction>())
+        val instructionListAdapter = ListAdapter(requireContext(), arrayListOf<Instruction>(), newRecipeViewModel)
         listInstructions.adapter = instructionListAdapter
 
         newRecipeViewModel.recipe.observe(viewLifecycleOwner) { recipe ->
