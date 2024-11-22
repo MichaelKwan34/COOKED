@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import com.group34.cooked.models.Ingredient
 import com.group34.cooked.models.Instruction
@@ -12,7 +13,12 @@ import com.group34.cooked.models.Instruction
 // Generic list adapter for displaying a list of items
 // Specifically used for displaying ingredients and instructions
 // Not configured to handle other types of items
-class ListAdapter<T>(private var context: Context, private var list: List<T>): BaseAdapter() {
+class ListAdapter<T>(
+    private var context: Context,
+    private var list: List<T>,
+    private val viewModel: NewRecipeViewModel? = null,
+    private val isPublish: Boolean = false
+): BaseAdapter() {
     override fun getCount(): Int {
         return list.size
     }
@@ -34,16 +40,35 @@ class ListAdapter<T>(private var context: Context, private var list: List<T>): B
             is Ingredient -> {
                 val view = inflater.inflate(R.layout.ingredient_list_item, parent, false)
                 val itemTv = view.findViewById<TextView>(R.id.ingredient_item)
-                itemTv.text = "${item.quantity} ${item.measurement} ${item.name}"
+                itemTv.text = "${item.quantity} ${item.measurement.unit} ${item.name}"
+
+                val deleteIv = view.findViewById<ImageView>(R.id.ingredient_item_delete)
+                if (isPublish) {
+                    deleteIv.visibility = View.GONE
+                } else {
+                    deleteIv.setOnClickListener {
+                        viewModel?.removeIngredient(item)
+                    }
+                }
+
                 view
             }
             is Instruction -> {
                 val view = inflater.inflate(R.layout.instruction_list_item, parent, false)
                 val stepTv = view.findViewById<TextView>(R.id.instruction_item_step)
                 val descriptionTv = view.findViewById<TextView>(R.id.instruction_item_description)
-
                 stepTv.text = "${item.stepNumber}. "
                 descriptionTv.text = item.description
+
+                val deleteIv = view.findViewById<ImageView>(R.id.instruction_item_delete)
+                if (isPublish) {
+                    deleteIv.visibility = View.GONE
+                } else {
+                    deleteIv.setOnClickListener {
+                        viewModel?.removeInstruction(item)
+                    }
+                }
+
                 view
             }
             else -> {

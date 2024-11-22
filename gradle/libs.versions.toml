@@ -15,6 +15,7 @@ constraintlayout = "2.2.0"
 googleServices = "4.4.2"
 firebaseAuthKtx = "23.1.0"
 sendgridJava = "5.0.0-rc.1"
+kotlinPlugin = "1.8.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,4 +37,5 @@ sendgrid-java = { group = "com.sendgrid", name = "sendgrid-java", version.ref = 
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlinPlugin"  }
 

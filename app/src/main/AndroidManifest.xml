@@ -35,6 +35,7 @@
         <activity android:name=".AuthenticationActivity" android:exported="false"/>
 
         <activity android:name=".NewRecipeActivity" android:exported="false"/>
+        <activity android:name=".AddIngredientActivity" android:exported="false"/>
 
     </application>
 
