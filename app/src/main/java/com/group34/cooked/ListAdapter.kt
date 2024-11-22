@@ -60,14 +60,14 @@ class ListAdapter<T>(
                 stepTv.text = "${item.stepNumber}. "
                 descriptionTv.text = item.description
 
-                val deleteIv = view.findViewById<ImageView>(R.id.instruction_item_delete)
-                if (isPublish) {
-                    deleteIv.visibility = View.GONE
-                } else {
-                    deleteIv.setOnClickListener {
-                        viewModel?.removeInstruction(item)
-                    }
-                }
+//                val deleteIv = view.findViewById<ImageView>(R.id.instruction_item_delete)
+//                if (isPublish) {
+//                    deleteIv.visibility = View.GONE
+//                } else {
+//                    deleteIv.setOnClickListener {
+//                        viewModel?.removeInstruction(item)
+//                    }
+//                }
 
                 view
             }
