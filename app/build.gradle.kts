@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +10,19 @@ android {
     namespace = "com.group34.cooked"
     compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
+
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(localPropertiesFile.inputStream())
+    }
+
+    val sendGridApiKey = localProperties.getProperty("SENDGRID_API_KEY") ?: ""
+
+
     defaultConfig {
         applicationId = "com.group34.cooked"
         minSdk = 24
@@ -16,6 +31,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "SENDGRID_API_KEY", "\"$sendGridApiKey\"")
     }
 
     buildTypes {
@@ -34,6 +50,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 
     packaging {
         resources {

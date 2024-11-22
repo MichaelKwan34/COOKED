@@ -76,12 +76,11 @@ class CreateAccountActivity : AppCompatActivity() {
         }
     }
 
-    // email = cookedgroup34@gmail.com
-    // pass = Group34cooked!!
+
     private fun sendEmail(to: String) {
         verificationCode = generateCode()
 
-        val apiKey = "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"
+        val apiKey = BuildConfig.SENDGRID_API_KEY
         val fromEmail = "cookedgroup34@gmail.com"
         val subject = "Verification Code for COOKED"
         val toEmail = to
