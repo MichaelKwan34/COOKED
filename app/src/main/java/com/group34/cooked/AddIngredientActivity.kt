@@ -34,7 +34,7 @@ class AddIngredientActivity : AppCompatActivity(R.layout.activity_add_ingredient
 
         btnSave.setOnClickListener {
             val name = etName.text.toString().trim()
-            val quantity = etQuantity.text.toString().toIntOrNull() ?: 0
+            val quantity = etQuantity.text.toString().toDoubleOrNull() ?: 0.0
 
             val measurementUnit = MeasurementUnit.entries.find { it.fullName == selectUnit }?: MeasurementUnit.WHOLE
             val measureName = measurementUnit.label
@@ -52,7 +52,7 @@ class AddIngredientActivity : AppCompatActivity(R.layout.activity_add_ingredient
     }
 
     // Check if the input fields are valid
-    private fun areInputsValid(name: String, quantity: Int): Boolean {
+    private fun areInputsValid(name: String, quantity: Double): Boolean {
         val isNameBlank = if (name.isBlank()) {
             etName.error = "Name is required"
             true
