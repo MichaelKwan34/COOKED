@@ -1,6 +1,10 @@
 package com.group34.cooked
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
