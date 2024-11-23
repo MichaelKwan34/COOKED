@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Recipe Preview Item  -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Recipe Image -->
+        <ImageView
+            android:id="@+id/recipe_image"
+            android:background="#666666"
+            android:layout_marginLeft="10dp"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_gravity="center"
+            android:layout_weight="0" />
+
+        <!-- Corresponding Recipe Text  -->
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/recipe_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#666666"
+                android:textSize="18sp"
+                android:text="Course"/>
+
+            <TextView
+                android:id="@+id/recipe_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textColor="#000000"
+                android:paddingVertical="1dp"
+                android:textStyle="bold"
+                android:text="Name"/>
+
+            <!-- Serving size, stars, icon  -->
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="2dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_weight="0"
+                    android:src="@drawable/serving_dome_black_14"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/recipe_serving_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="5dp"
+
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:text="Serves"/>
+            </LinearLayout>
+
+            <!-- Tags for difficulty and cook time -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/recipe_difficulty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:text="Difficulty"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/recipe_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginLeft="5dp"
+                    android:text="Time"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_weight="0"
+            android:layout_gravity="center"
+            android:src="@drawable/navigator"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>
