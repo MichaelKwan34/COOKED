@@ -1,7 +1,6 @@
 package com.group34.cooked
 
 import android.content.Context
-import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.group34.cooked.models.Recipe
-import com.group34.cooked.R
 
 
-class RecipeAdapter(
+class RecipePreviewAdapter(
     private var recipes: List<Recipe> = emptyList(),
     private val onItemClick: (Recipe) -> Unit,
     private val context: Context
-    ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+    ) : RecyclerView.Adapter<RecipePreviewAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val nameTextView: TextView = view.findViewById(R.id.recipe_name)
@@ -32,8 +30,11 @@ class RecipeAdapter(
         fun bind(recipe: Recipe) {
             nameTextView.text = recipe.name
             courseTextView.text = recipe.course
-
             servingSizeTextView.text = context.getString(R.string.serving_size_template, recipe.servings)
+
+            itemView.setOnClickListener {
+                onItemClick(recipe)
+            }
 
             // setting the tag colours and text
             difficultyChip.text = recipe.difficulty

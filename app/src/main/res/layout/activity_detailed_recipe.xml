@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -13,6 +13,7 @@
         android:padding="16dp">
 
         <ImageView
+            android:id="@+id/back_button"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:src="@drawable/arrow_back"
@@ -32,6 +33,7 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/edit_button"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:src="@drawable/edit"
@@ -42,10 +44,11 @@
 
 
     <!-- Recipe Content Section -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
+        android:layout_weight="1"
         >
 
         <LinearLayout
@@ -55,7 +58,7 @@
 
             <!-- Recipe Image -->
             <ImageView
-                android:id="@+id/recipeImage"
+                android:id="@+id/recipe_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
@@ -154,6 +157,7 @@
                             android:text="N/A" />
                     </LinearLayout>
 
+
                     <TextView
                         android:id="@+id/servings"
                         android:layout_width="wrap_content"
@@ -170,6 +174,12 @@
                         android:text="4 ★★★★★" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/darker_gray" />
+
                 <!-- Ingredients Section -->
                 <TextView
                     android:id="@+id/ingredientsHeader"
@@ -180,20 +190,13 @@
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
-                <LinearLayout
-                    android:id="@+id/ingredientsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="8dp">
-
-                    <ListView
-                        android:id="@+id/ingredients_list"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ingredients_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:dividerHeight="1dp"/>
-
-                </LinearLayout>
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:scrollbars="vertical" />
 
                 <View
                     android:layout_width="match_parent"
@@ -210,26 +213,16 @@
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
-                <ListView
-                    android:id="@+id/instructions_list"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/instructions_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dividerHeight="1dp"/>
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:scrollbars="vertical" />
             </LinearLayout>
 
 
         </LinearLayout>
-    </ScrollView>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
-
-
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

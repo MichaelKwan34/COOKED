@@ -41,8 +41,10 @@
         <activity android:name=".NewRecipeActivity" android:exported="false"/>
         <activity android:name=".AddIngredientActivity" android:exported="false"/>
 
-        <activity android:name=".NewRecipeActivity" android:exported="false"/>
-        <activity android:name=".AddIngredientActivity" android:exported="false"/>
+        <activity android:name=".DetailedRecipeActivity" android:exported="false"
+            android:windowEnterTransition="@android:transition/slide_right"
+            android:windowExitTransition="@android:transition/slide_left"
+            />
 
     </application>
 

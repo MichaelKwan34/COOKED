@@ -82,6 +82,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.glide)
+    implementation(libs.material.v190)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
