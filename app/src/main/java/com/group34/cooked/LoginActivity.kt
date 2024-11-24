@@ -33,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
         // If the user has signed in, open the Home page directly instead of log in
         // Note: LOGOUT implementation is needed
+        /*
        val currentUser = firebaseAuth.currentUser
         if (currentUser != null) {
            // If user is already signed in, redirect to HomeActivity
@@ -42,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
            finish()
           return // No need to proceed with the rest of the onCreate code
       }
+      */
 
         email = findViewById(R.id.email_address_input)
         password = findViewById(R.id.password_input)
