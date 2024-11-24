@@ -1,4 +1,4 @@
 package com.group34.cooked
 
-class RecipeAdapter {
+class RecipeViewModel {
 }
