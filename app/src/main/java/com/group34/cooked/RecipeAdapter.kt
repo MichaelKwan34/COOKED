@@ -1,98 +1,89 @@
 package com.group34.cooked
 
 import android.content.Context
-import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
-import com.group34.cooked.models.Recipe
-import com.group34.cooked.R
+import com.group34.cooked.models.Ingredient
+import com.group34.cooked.models.Instruction
 
 
-class RecipeAdapter(
-    private var recipes: List<Recipe> = emptyList(),
-    private val onItemClick: (Recipe) -> Unit,
-    private val context: Context
-    ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter<T>(
+    private var list: List<T>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val nameTextView: TextView = view.findViewById(R.id.recipe_name)
-        val courseTextView: TextView = view.findViewById(R.id.recipe_course)
-        val servingSizeTextView: TextView = view.findViewById(R.id.recipe_serving_size)
-        val difficultyChip: Chip = view.findViewById(R.id.recipe_difficulty)
-        val durationChip: Chip = view.findViewById(R.id.recipe_duration)
-        val imageView: ImageView = view.findViewById(R.id.recipe_image)
+    // View types to differentiate between Ingredient and Instruction
+    private companion object {
+        const val VIEW_TYPE_INGREDIENT = 0
+        const val VIEW_TYPE_INSTRUCTION = 1
+    }
 
+    // Define ViewHolder for Ingredient
+    class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val ingredientTextView: TextView = itemView.findViewById(R.id.ingredient_item)
+    }
 
-        fun bind(recipe: Recipe) {
-            nameTextView.text = recipe.name
-            courseTextView.text = recipe.course
+    // Define ViewHolder for Instruction
+    class InstructionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val stepTextView: TextView = itemView.findViewById(R.id.instruction_item_step)
+        val descriptionTextView: TextView = itemView.findViewById(R.id.instruction_item_description)
+    }
 
-            servingSizeTextView.text = context.getString(R.string.serving_size_template, recipe.servings)
+    override fun getItemViewType(position: Int): Int {
+        return when (list[position]) {
+            is Ingredient -> VIEW_TYPE_INGREDIENT
+            is Instruction -> VIEW_TYPE_INSTRUCTION
+            else -> throw IllegalArgumentException("Unsupported item type")
+        }
+    }
 
-            // setting the tag colours and text
-            difficultyChip.text = recipe.difficulty
-            when (recipe.difficulty.lowercase()) {
-                "easy" -> {
-                    difficultyChip.setChipBackgroundColorResource(R.color.blueAccent)
-                    difficultyChip.setChipStrokeColorResource(R.color.blueAccent)
-                }
-                "medium" -> {
-                    difficultyChip.setChipBackgroundColorResource(R.color.yellowAccent)
-                    difficultyChip.setChipStrokeColorResource(R.color.yellowAccent)
-                }
-                "hard" -> {
-                    difficultyChip.setChipBackgroundColorResource(R.color.redAccent)
-                    difficultyChip.setChipStrokeColorResource(R.color.redAccent)
-                }
-                // Default to medium
-                else -> {
-                    difficultyChip.setChipBackgroundColorResource(R.color.yellowAccent)
-                    difficultyChip.setChipStrokeColorResource(R.color.yellowAccent)
-                }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            VIEW_TYPE_INGREDIENT -> {
+                val view = inflater.inflate(R.layout.ingredient_list_item, parent, false)
 
+                val deleteButton: ImageView = view.findViewById(R.id.ingredient_item_delete)
+                deleteButton.visibility = View.GONE
+
+                IngredientViewHolder(view)
             }
-            durationChip.text = context.getString(R.string.duration_template, recipe.duration)
-            when {
-                // 30 mins or less
-                recipe.duration <= 30 -> {
-                    durationChip.setChipBackgroundColorResource(R.color.blueAccent)
-                    durationChip.setChipStrokeColorResource(R.color.blueAccent)
-                }
-                // 1 hour or less
-                recipe.duration <= 60 -> {
-                    durationChip.setChipBackgroundColorResource(R.color.yellowAccent)
-                    durationChip.setChipStrokeColorResource(R.color.yellowAccent)
-                }
-                // > 1 hour
-                else -> {
-                    durationChip.setChipBackgroundColorResource(R.color.yellowAccent)
-                    durationChip.setChipStrokeColorResource(R.color.yellowAccent)
-                }
+            VIEW_TYPE_INSTRUCTION -> {
+                val view = inflater.inflate(R.layout.instruction_list_item, parent, false)
+                val deleteButton: ImageView = view.findViewById(R.id.instruction_item_delete)
+                deleteButton.visibility = View.GONE
+                InstructionViewHolder(view)
+            }
+            else -> throw IllegalArgumentException("Unsupported view type")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val item = list[position]) {
+            is Ingredient -> {
+                val ingredientHolder = holder as IngredientViewHolder
+                ingredientHolder.ingredientTextView.text = "${item.quantity} ${item.measurement.unit} ${item.name}"
+            }
+            is Instruction -> {
+                val instructionHolder = holder as InstructionViewHolder
+                instructionHolder.stepTextView.text = "${item.stepNumber}. "
+                instructionHolder.descriptionTextView.text = item.description
+                // Log.d("InstructionAdapter", "Description: ${item.description}")
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recipe_preview_item, parent, false)
-        Log.d("RecipeAdapter", "onCreateViewHolder called")
-        return RecipeViewHolder(view)
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        holder.bind(recipes[position])
-    }
-
-    // For updating the list of entries as it changes
-    fun submitList(newEntries: List<Recipe>) {
-        recipes = newEntries
+    fun setList(newList: List<T>) {
+        list = newList
         notifyDataSetChanged()
     }
-
-    override fun getItemCount() = recipes.size
 }
