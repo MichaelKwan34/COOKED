@@ -5,8 +5,6 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -24,7 +22,9 @@ import com.google.firebase.storage.FirebaseStorage
 import com.group34.cooked.NewRecipeActivity
 import com.group34.cooked.NewRecipeViewModel
 import com.group34.cooked.R
+import com.group34.cooked.SpinnerAdapter
 import com.group34.cooked.databinding.FragmentNewRecipeInformationBinding
+import com.group34.cooked.models.Course
 import com.group34.cooked.models.RecipeCreationStatus
 import com.group34.cooked.models.RecipeDifficulty
 
@@ -36,7 +36,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     private lateinit var photo: ImageView
     private lateinit var btnNewPhoto: TextView
     private lateinit var etName: EditText
-    private lateinit var etCourse: EditText
+    private lateinit var spCourse: Spinner
     private lateinit var spDifficulty: Spinner
     private lateinit var npDurationHour: NumberPicker
     private lateinit var npDurationMinute: NumberPicker
@@ -61,7 +61,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         photo = binding.newRecipePhoto
         btnNewPhoto = binding.newRecipePhotoButton
         etName = binding.newRecipeName
-        etCourse = binding.newRecipeCourse
+        spCourse = binding.newRecipeCourse
         spDifficulty = binding.newRecipeDifficulty
         npDurationHour = binding.newRecipeDurationHours
         npDurationMinute = binding.newRecipeDurationMinutes
@@ -95,6 +95,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         initButtons()
         initDuration()
         initDifficultySpinner()
+        initCourseSpinner()
 
         updateViewModel()
     }
@@ -131,45 +132,27 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         npDurationMinute.wrapSelectorWheel = false
     }
 
+    // Initialize the difficulty spinner with item selection listener
     private fun initDifficultySpinner() {
-        val difficulties = RecipeDifficulty.entries.map { it.value }.toTypedArray()
+        val difficulties = RecipeDifficulty.entries.map { it.toString() }.toTypedArray()
+        SpinnerAdapter.createDefaultSpinnerAdapter(requireContext(), difficulties, spDifficulty) { difficulty ->
+            newRecipeViewModel.setDifficulty(difficulty)
+        }
+    }
 
-        // Create an ArrayAdapter using the difficulty array and a default spinner layout
-        activity?.applicationContext?.let {
-            ArrayAdapter(
-                it,
-                android.R.layout.simple_spinner_item,
-                difficulties
-            ).also { adapter ->
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spDifficulty.adapter = adapter
-
-                // Handle spinner item selection
-                spDifficulty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        val difficulty = RecipeDifficulty.findById(position).value;
-                        newRecipeViewModel.setDifficulty(difficulty)
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                }
-            }
+    // Initialize the course spinner with item selection listener
+    private fun initCourseSpinner() {
+        val courses = Course.entries.map { it.toString() }.toTypedArray()
+        SpinnerAdapter.createDefaultSpinnerAdapter(requireContext(), courses, spCourse) { course ->
+            newRecipeViewModel.setCourse(course)
         }
     }
 
     // Use listeners to update the view model
-    // Difficulty is updated by initDifficultySpinner
     private fun updateViewModel() {
         etName.addTextChangedListener {
             if (etName.text.trim().isNotEmpty()) {
                 newRecipeViewModel.setName(etName.text.trim().toString())
-            }
-        }
-
-        etCourse.addTextChangedListener {
-            if (etCourse.text.trim().isNotEmpty()) {
-                newRecipeViewModel.setCourse(etCourse.text.trim().toString())
             }
         }
 
@@ -192,11 +175,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     // Returns true if valid. Otherwise false
     private fun areInputsValid(): Boolean {
         // Check edit text fields for empty values
-        val etValues = listOf(
-            etName,
-            etCourse,
-            etServings,
-        )
+        val etValues = listOf(etName, etServings)
         val isEtEmpty = etValues.stream()
             .filter {
                 it.text?.isEmpty() ?: true
@@ -227,7 +206,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
             Toast.makeText(context, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
             return
         }
-        newRecipeViewModel.setStatus(status.value)
+        newRecipeViewModel.setStatus(status.toString())
 
         // Save the recipe to Firestore
         newRecipeViewModel

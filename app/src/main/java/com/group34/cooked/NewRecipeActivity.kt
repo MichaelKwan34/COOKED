@@ -90,7 +90,7 @@ class NewRecipeActivity : AppCompatActivity() {
     }
 
     private fun publish() {
-        newRecipeViewModel.setStatus(RecipeCreationStatus.PUBLISHED.value)
+        newRecipeViewModel.setStatus(RecipeCreationStatus.PUBLISHED.toString())
 
         // Save the recipe to Firestore
         newRecipeViewModel
