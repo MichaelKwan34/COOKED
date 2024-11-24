@@ -78,7 +78,7 @@ class NewRecipeActivity : AppCompatActivity() {
 
             // Handle click event of publish
             publishItem.setOnMenuItemClickListener {
-                if (newRecipeViewModel.isRecipeValid()) {
+                if (newRecipeViewModel.recipe.value!!.isRecipeValid()) {
                     publish()
                     Toast.makeText(this, "Recipe Published!", Toast.LENGTH_SHORT).show()
                 } else {
@@ -89,7 +89,6 @@ class NewRecipeActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: Duplicated from NewRecipeInformationFragment
     private fun publish() {
         newRecipeViewModel.setStatus(RecipeCreationStatus.PUBLISHED.value)
 

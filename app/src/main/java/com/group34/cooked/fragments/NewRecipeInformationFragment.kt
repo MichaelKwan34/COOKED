@@ -1,9 +1,7 @@
 package com.group34.cooked.fragments
 
 import android.Manifest.permission.CAMERA
-import android.app.ProgressDialog
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -29,7 +27,6 @@ import com.group34.cooked.R
 import com.group34.cooked.databinding.FragmentNewRecipeInformationBinding
 import com.group34.cooked.models.RecipeCreationStatus
 import com.group34.cooked.models.RecipeDifficulty
-import java.io.ByteArrayOutputStream
 
 class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_information) {
     private var _binding: FragmentNewRecipeInformationBinding? = null
@@ -83,7 +80,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             if (bitmap != null) {
                 photo.setImageBitmap(bitmap)
-                uploadImage(bitmap)
+                newRecipeViewModel.setPhotoBitmap(bitmap)
             }
         }
 
@@ -243,37 +240,5 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
             }
 
         (activity as? NewRecipeActivity)?.finish()
-    }
-
-    // TODO: Uploads every image taken. Some only upload when saved
-    // Uploads an image to Firebase Storage
-    private fun uploadImage(bitmap: Bitmap) {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val imageData = baos.toByteArray()
-
-        // Show progress dialog
-        val progressDialog = ProgressDialog(requireContext())
-        progressDialog.setTitle("Uploading Image...")
-        progressDialog.setCancelable(false)
-        progressDialog.show()
-
-        // TODO: Involve user ID in file name (either as new folder or as part of the file name)
-        val fileName = "images/${System.currentTimeMillis()}.jpg"
-        val storageRef = storage.reference.child(fileName)
-
-        // Upload image
-        storageRef.putBytes(imageData)
-            .addOnSuccessListener {
-                storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    Log.d("Firebase", "Image uploaded: $uri")
-                    newRecipeViewModel.setPhotoUri(uri.toString())
-                    if (progressDialog.isShowing) progressDialog.dismiss()
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firebase", "Error uploading image", e)
-                if (progressDialog.isShowing) progressDialog.dismiss()
-            }
     }
 }

@@ -1,23 +1,30 @@
 package com.group34.cooked
 
+import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.group34.cooked.models.Ingredient
 import com.group34.cooked.models.Instruction
 import com.group34.cooked.models.Recipe
 
-class NewRecipeViewModel : ViewModel() {
+class NewRecipeViewModel(
+    private val imageRepository: ImageRepository = ImageRepository(),
+    private val recipeRepository: RecipeRepository = RecipeRepository()
+) : ViewModel() {
     private val _recipe = MutableLiveData<Recipe>()
     val recipe: LiveData<Recipe> get() = _recipe
 
+    private val _photoBitmap = MutableLiveData<Bitmap?>()
+    val photoBitmap: LiveData<Bitmap?> get() = _photoBitmap
+
     init {
-        _recipe.value = Recipe(name = "", course = "", difficulty = "", duration = 0, servings = 0, status = "")
+        _recipe.value = Recipe()
+        _photoBitmap.value = null
     }
 
     fun setName(name: String) {
@@ -91,16 +98,8 @@ class NewRecipeViewModel : ViewModel() {
         _recipe.value = _recipe.value?.copy(photo = url)
     }
 
-    fun isRecipeValid(): Boolean {
-        val recipe = _recipe.value
-        return recipe != null &&
-                recipe.name.isNotBlank() &&
-                recipe.course.isNotBlank() &&
-                recipe.difficulty.isNotBlank() &&
-                recipe.duration > 0 &&
-                recipe.servings > 0 &&
-                recipe.ingredients.isNotEmpty() &&
-                recipe.instructions.isNotEmpty()
+    fun setPhotoBitmap(bitmap: Bitmap?) {
+        _photoBitmap.value = bitmap
     }
 
 
@@ -110,25 +109,12 @@ class NewRecipeViewModel : ViewModel() {
         // Add user id to the recipe
         setCreatorId(FirebaseAuth.getInstance().currentUser!!.uid)
 
-        // Get the reference once added
-        val recipeRef = Firebase.firestore
-            .collection("recipes")
-            .add(_recipe.value!!)
+        imageRepository.uploadImage(
+            _photoBitmap.value,
+            onSuccess = { uri -> setPhotoUri(uri) },
+            onFailure = { e -> Log.e("Firebase", "Error uploading image: ", e) }
+        )
 
-
-        // Add ingredients and instructions if the recipe is added
-        recipeRef.addOnSuccessListener { documentReference ->
-            val ingredientsCollectionRef = documentReference.collection("ingredients")
-            _recipe.value!!.ingredients.forEach { ingredient ->
-                ingredientsCollectionRef.add(ingredient)
-            }
-
-            val instructionsCollectionRef = documentReference.collection("instructions")
-            _recipe.value!!.instructions.forEach { instruction ->
-                instructionsCollectionRef.add(instruction)
-            }
-        }
-
-        return recipeRef
+        return recipeRepository.saveRecipe(recipe.value!!)
     }
 }
