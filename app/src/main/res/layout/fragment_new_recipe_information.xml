@@ -52,7 +52,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:contentDescription="profile image"
-                    android:src="@drawable/account_circle_24" />
+                    android:src="@drawable/baseline_fastfood_24" />
 
                 <View
                     android:layout_width="0dp"

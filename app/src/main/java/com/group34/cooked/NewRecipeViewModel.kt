@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -41,10 +42,6 @@ class NewRecipeViewModel : ViewModel() {
         _recipe.value = _recipe.value?.copy(duration = newDuration)
     }
 
-    fun setDuration(duration: Int) {
-        _recipe.value = _recipe.value?.copy(duration = duration)
-    }
-
     fun setServings(servings: Int) {
         _recipe.value = _recipe.value?.copy(servings = servings)
     }
@@ -75,6 +72,11 @@ class NewRecipeViewModel : ViewModel() {
         _recipe.value = _recipe.value?.apply {
             instructions.remove(instruction)
         }
+
+        // Reorder the step numbers
+        _recipe.value?.instructions?.forEachIndexed { index, newInstruction ->
+            newInstruction.stepNumber = index + 1
+        }
     }
 
     fun setAverageStars(averageStars: Double) {
@@ -89,9 +91,25 @@ class NewRecipeViewModel : ViewModel() {
         _recipe.value = _recipe.value?.copy(photo = url)
     }
 
+    fun isRecipeValid(): Boolean {
+        val recipe = _recipe.value
+        return recipe != null &&
+                recipe.name.isNotBlank() &&
+                recipe.course.isNotBlank() &&
+                recipe.difficulty.isNotBlank() &&
+                recipe.duration > 0 &&
+                recipe.servings > 0 &&
+                recipe.ingredients.isNotEmpty() &&
+                recipe.instructions.isNotEmpty()
+    }
+
+
     // Returns a task that adds the recipe to the firestore
     // Use the return to check if add is successful or not
     fun saveRecipeToFireStore(): Task<DocumentReference> {
+        // Add user id to the recipe
+        setCreatorId(FirebaseAuth.getInstance().currentUser!!.uid)
+
         // Get the reference once added
         val recipeRef = Firebase.firestore
             .collection("recipes")

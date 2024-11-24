@@ -78,8 +78,12 @@ class NewRecipeActivity : AppCompatActivity() {
 
             // Handle click event of publish
             publishItem.setOnMenuItemClickListener {
-                publish()
-                Toast.makeText(this, "Recipe Published!", Toast.LENGTH_SHORT).show()
+                if (newRecipeViewModel.isRecipeValid()) {
+                    publish()
+                    Toast.makeText(this, "Recipe Published!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
+                }
                 true
             }
         }

@@ -48,8 +48,6 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     private lateinit var btnDraft: Button
     private lateinit var btnPublish: Button
 
-    private var selectDifficulty = RecipeDifficulty.EASY.id
-
     private lateinit var newRecipeViewModel: NewRecipeViewModel
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Void?>
@@ -137,12 +135,14 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     }
 
     private fun initDifficultySpinner() {
+        val difficulties = RecipeDifficulty.entries.map { it.value }.toTypedArray()
+
         // Create an ArrayAdapter using the difficulty array and a default spinner layout
         activity?.applicationContext?.let {
-            ArrayAdapter.createFromResource(
+            ArrayAdapter(
                 it,
-                R.array.difficulty_array,
-                android.R.layout.simple_spinner_item
+                android.R.layout.simple_spinner_item,
+                difficulties
             ).also { adapter ->
                 // Specify the layout to use when the list of choices appears
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -151,13 +151,11 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
                 // Handle spinner item selection
                 spDifficulty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        selectDifficulty = position
-                        newRecipeViewModel.setDifficulty(RecipeDifficulty.findById(selectDifficulty).value)
+                        val difficulty = RecipeDifficulty.findById(position).value;
+                        newRecipeViewModel.setDifficulty(difficulty)
                     }
 
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        TODO("Not yet implemented")
-                    }
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
                 }
             }
         }
@@ -195,7 +193,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
 
     // Validates the input fields
     // Returns true if valid. Otherwise false
-    private fun validateInput(): Boolean {
+    private fun areInputsValid(): Boolean {
         // Check edit text fields for empty values
         val etValues = listOf(
             etName,
@@ -228,7 +226,8 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
 
     // Save the recipe with the given status
     private fun save(status: RecipeCreationStatus) {
-        if (!validateInput()) {
+        if (status == RecipeCreationStatus.PUBLISHED && !areInputsValid()) {
+            Toast.makeText(context, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
             return
         }
         newRecipeViewModel.setStatus(status.value)
@@ -246,6 +245,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         (activity as? NewRecipeActivity)?.finish()
     }
 
+    // TODO: Uploads every image taken. Some only upload when saved
     // Uploads an image to Firebase Storage
     private fun uploadImage(bitmap: Bitmap) {
         val baos = ByteArrayOutputStream()
