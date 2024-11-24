@@ -55,6 +55,8 @@ class RecipeAdapter<T>(
             }
             VIEW_TYPE_INSTRUCTION -> {
                 val view = inflater.inflate(R.layout.instruction_list_item, parent, false)
+                val deleteButton: ImageView = view.findViewById(R.id.instruction_item_delete)
+                deleteButton.visibility = View.GONE
                 InstructionViewHolder(view)
             }
             else -> throw IllegalArgumentException("Unsupported view type")
