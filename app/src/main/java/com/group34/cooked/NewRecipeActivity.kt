@@ -78,16 +78,19 @@ class NewRecipeActivity : AppCompatActivity() {
 
             // Handle click event of publish
             publishItem.setOnMenuItemClickListener {
-                publish()
-                Toast.makeText(this, "Recipe Published!", Toast.LENGTH_SHORT).show()
+                if (newRecipeViewModel.recipe.value!!.isRecipeValid()) {
+                    publish()
+                    Toast.makeText(this, "Recipe Published!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
+                }
                 true
             }
         }
     }
 
-    // TODO: Duplicated from NewRecipeInformationFragment
     private fun publish() {
-        newRecipeViewModel.setStatus(RecipeCreationStatus.PUBLISHED.value)
+        newRecipeViewModel.setStatus(RecipeCreationStatus.PUBLISHED.toString())
 
         // Save the recipe to Firestore
         newRecipeViewModel

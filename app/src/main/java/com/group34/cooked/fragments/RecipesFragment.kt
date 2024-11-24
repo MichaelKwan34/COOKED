@@ -1,43 +1,43 @@
 package com.group34.cooked.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.group34.cooked.DetailedRecipeActivity
 import com.group34.cooked.R
-import com.group34.cooked.RecipeAdapter
-import com.group34.cooked.SavedRecipesViewModel
-import com.group34.cooked.Util
-import com.group34.cooked.models.Ingredient
-import com.group34.cooked.models.Instruction
-import com.group34.cooked.models.Measurement
-import com.group34.cooked.models.Recipe
+import com.group34.cooked.RecipePreviewAdapter
+import com.group34.cooked.RecipeViewModel
 
 
 class RecipesFragment : Fragment(R.layout.fragment_recipes) {
 
-    private lateinit var recipeAdapter: RecipeAdapter
+    private lateinit var recipePreviewAdapter: RecipePreviewAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewModel: SavedRecipesViewModel
+    private lateinit var viewModel: RecipeViewModel
     private lateinit var userId: String
     private lateinit var dividerItemDecoration: DividerItemDecoration
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        viewModel = SavedRecipesViewModel()
+        viewModel = RecipeViewModel()
         recyclerView = view.findViewById(R.id.recycler_view)
-        recipeAdapter = RecipeAdapter(
+        recipePreviewAdapter = RecipePreviewAdapter(
             context = requireContext(),
-            // this will launch the recipe details page
-            onItemClick = { recipe ->})
-
-
-
-        recyclerView.adapter = recipeAdapter
+            // this will launch the recipe details page as an activity
+            onItemClick = { recipe ->
+                Log.d("RecipePreviewAdapter", "Recipe clicked: $recipe")
+                val intent = Intent(requireContext(), DetailedRecipeActivity::class.java)
+                intent.putExtra("recipe_id", recipe.id)
+                startActivity(intent)
+            })
+        recyclerView.adapter = recipePreviewAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         dividerItemDecoration = DividerItemDecoration(
@@ -48,7 +48,7 @@ class RecipesFragment : Fragment(R.layout.fragment_recipes) {
 
         viewModel.observeUserSavedRecipes(userId)
         viewModel.savedRecipes.observe(viewLifecycleOwner) { recipes ->
-            recipeAdapter.submitList(recipes)
+            recipePreviewAdapter.submitList(recipes)
         }
     }
 
@@ -56,9 +56,7 @@ class RecipesFragment : Fragment(R.layout.fragment_recipes) {
         super.onResume()
         // refresh when saved recipes are updated
         viewModel.savedRecipes.observe(viewLifecycleOwner) { recipes ->
-            recipeAdapter.submitList(recipes)
+            recipePreviewAdapter.submitList(recipes)
         }
     }
-
-
 }

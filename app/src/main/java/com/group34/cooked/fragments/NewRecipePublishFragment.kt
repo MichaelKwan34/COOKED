@@ -7,7 +7,6 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.group34.cooked.ListAdapter
 import com.group34.cooked.NewRecipeViewModel
 import com.group34.cooked.R
@@ -38,17 +37,15 @@ class NewRecipePublishFragment : Fragment(R.layout.fragment_new_recipe_publish) 
         // Shared view model with activity
         newRecipeViewModel = ViewModelProvider(requireActivity())[NewRecipeViewModel::class.java]
 
+        // Observe photo changes
+        newRecipeViewModel.photoBitmap.observe(viewLifecycleOwner) { photoBitmap ->
+            ivPhoto.setImageBitmap(photoBitmap)
+        }
+
         // Observe recipe changes
         newRecipeViewModel.recipe.observe(viewLifecycleOwner) { recipe ->
-            // Load photo from URI
-            Glide
-                .with(requireContext())
-                .load(recipe.photo)
-                .centerCrop()
-                .into(ivPhoto)
-
             tvTitle.text = recipe.name
-            tvServings.text = "Serves " + recipe.servings
+            tvServings.text =  context?.getString(R.string.serving_size_template, recipe.servings)
             lvIngredients.adapter = ListAdapter(requireContext(), recipe.ingredients, isPublish = true)
             lvInstructions.adapter = ListAdapter(requireContext(), recipe.instructions, isPublish = true)
         }

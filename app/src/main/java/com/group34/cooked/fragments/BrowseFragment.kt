@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.group34.cooked.ChatActivity
+import com.group34.cooked.NewRecipeActivity
 import com.group34.cooked.R
 
 class BrowseFragment : Fragment(R.layout.fragment_browse) {
@@ -17,6 +18,10 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
         generateButton.setOnClickListener {
             Log.d("BrowseFragment", "Generate button clicked")
             startChat()
+        }
+        val btnAddRecipe = view.findViewById<Button>(R.id.btn_add_recipe)
+        btnAddRecipe.setOnClickListener {
+            startActivity(Intent(context, NewRecipeActivity::class.java))
         }
     }
 

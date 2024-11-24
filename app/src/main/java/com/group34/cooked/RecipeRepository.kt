@@ -2,6 +2,8 @@ package com.group34.cooked
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.group34.cooked.models.Recipe
 
@@ -25,8 +27,24 @@ class RecipeRepository {
     }
 
     // Add or update a recipe
-    fun saveRecipe(recipe: Recipe) {
-        recipesCollection.document(recipe.id).set(recipe)
+    fun saveRecipe(recipe: Recipe): Task<DocumentReference> {
+        val recipeRef = recipesCollection.add(recipe)
+
+        recipeRef
+            .addOnSuccessListener { documentReference ->
+                // Add ingredients and instructions to subcollections
+                val ingredientsCollectionRef = documentReference.collection("ingredients")
+                recipe.ingredients.forEach { ingredient ->
+                    ingredientsCollectionRef.add(ingredient)
+                }
+
+                val instructionsCollectionRef = documentReference.collection("instructions")
+                recipe.instructions.forEach { instruction ->
+                    instructionsCollectionRef.add(instruction)
+                }
+            }
+
+        return recipeRef
     }
 
     // Delete a recipe

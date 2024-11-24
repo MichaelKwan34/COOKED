@@ -52,7 +52,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:contentDescription="profile image"
-                    android:src="@drawable/account_circle_24" />
+                    android:src="@drawable/baseline_fastfood_24" />
 
                 <View
                     android:layout_width="0dp"
@@ -108,12 +108,12 @@
                 android:text="Course"
                 android:textColor="@color/textForm" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/new_recipe_course"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/background"
-                android:inputType="text" />
+                android:paddingHorizontal="10dp" />
 
         </LinearLayout>
 

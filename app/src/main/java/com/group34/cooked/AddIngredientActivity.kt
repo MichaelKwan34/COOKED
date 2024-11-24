@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.group34.cooked.models.Ingredient
 import com.group34.cooked.models.Measurement
 import com.group34.cooked.models.MeasurementUnit
+import com.group34.cooked.models.MeasurementUnit.Companion.getFullName
 
 class AddIngredientActivity : AppCompatActivity(R.layout.activity_add_ingredient)  {
 
@@ -36,7 +37,7 @@ class AddIngredientActivity : AppCompatActivity(R.layout.activity_add_ingredient
             val name = etName.text.toString().trim()
             val quantity = etQuantity.text.toString().toDoubleOrNull() ?: 0.0
 
-            val measurementUnit = MeasurementUnit.entries.find { it.fullName == selectUnit }?: MeasurementUnit.WHOLE
+            val measurementUnit = MeasurementUnit.entries.find { getFullName(it) == selectUnit }?: MeasurementUnit.WHOLE
             val measureName = measurementUnit.label
             val measureUnit = measurementUnit.unit
             val unit = Measurement(measureName, measureUnit)
@@ -71,7 +72,7 @@ class AddIngredientActivity : AppCompatActivity(R.layout.activity_add_ingredient
     }
 
     private fun initMeasurementSpinner() {
-        val measurementUnits = MeasurementUnit.entries.map { it.fullName }.toTypedArray()
+        val measurementUnits = MeasurementUnit.entries.map { getFullName(it) }.toTypedArray()
 
         // Create an ArrayAdapter using the measurement array and a default spinner layout
         applicationContext?.let {
