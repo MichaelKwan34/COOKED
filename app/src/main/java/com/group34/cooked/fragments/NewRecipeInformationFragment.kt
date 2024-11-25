@@ -139,15 +139,11 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     // Use listeners to update the view model
     private fun updateViewModel() {
         etName.addTextChangedListener {
-            if (etName.text.trim().isNotEmpty()) {
-                newRecipeViewModel.setName(etName.text.trim().toString())
-            }
+            newRecipeViewModel.setName(etName.text.trim().toString())
         }
 
         etServings.addTextChangedListener {
-            if (etServings.text.trim().isNotEmpty()) {
-                newRecipeViewModel.setServings(etServings.text.trim().toString().toInt())
-            }
+            newRecipeViewModel.setServings(etServings.text.trim().toString().toInt())
         }
 
         npDurationHour.setOnValueChangedListener { _, _, value ->
@@ -197,6 +193,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
             }
             .addOnFailureListener { e ->
                 Log.w("NewRecipe", "Error adding document", e)
+                Toast.makeText(context, "Error saving draft", Toast.LENGTH_SHORT).show()
             }
 
         (activity as? NewRecipeActivity)?.finish()
