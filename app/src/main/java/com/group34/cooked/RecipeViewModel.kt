@@ -78,10 +78,12 @@ class RecipeViewModel : ViewModel() {
     }
 
     fun saveRecipe(userId: String, recipeId: String) {
-        db.collection("savedRecipes").document(userId).update("recipeIds", FieldValue.arrayUnion(recipeId))
+        Log.d("Firebase", "Saving recipe with ID: $recipeId")
+        db.collection("savedrecipes").document(userId).update("recipeIds", FieldValue.arrayUnion(recipeId))
     }
     fun unsaveRecipe(userId: String, recipeId: String) {
-        db.collection("savedRecipes").document(userId).update("recipeIds", FieldValue.arrayRemove(recipeId))
+        Log.d("Firebase", "Unsaving recipe with ID: $recipeId")
+        db.collection("savedrecipes").document(userId).update("recipeIds", FieldValue.arrayRemove(recipeId))
 
     }
 

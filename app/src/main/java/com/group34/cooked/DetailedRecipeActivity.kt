@@ -13,6 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
 import com.group34.cooked.models.Ingredient
 import com.group34.cooked.models.Instruction
 
@@ -30,8 +33,8 @@ class DetailedRecipeActivity : AppCompatActivity() {
     private lateinit var editButton: ImageView
 
     private lateinit var recipeTitle: TextView
-    private lateinit var shareButton: Button
-    private lateinit var saveButton: Button
+    private lateinit var shareButton: MaterialButton
+    private lateinit var saveButton: MaterialButton
     private lateinit var creatorImage: ImageView
     private lateinit var creatorName: TextView
     private lateinit var servings: TextView
@@ -39,6 +42,7 @@ class DetailedRecipeActivity : AppCompatActivity() {
     private lateinit var recipeImage: ImageView
     private lateinit var recipeId: String
     private lateinit var headerRecipeName: TextView
+    private lateinit var currentUser: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,7 @@ class DetailedRecipeActivity : AppCompatActivity() {
         recipeId = intent.getStringExtra("recipe_id").toString()
         // Log.d("DetailedRecipeActivity", "Recipe ID: $recipeId")
 
+        currentUser = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         setupViews()
         setupOnClickListeners()
 
@@ -79,6 +84,7 @@ class DetailedRecipeActivity : AppCompatActivity() {
 
         // Set up ViewModel
         currentRecipeViewModel = ViewModelProvider(this)[RecipeViewModel::class.java]
+        currentRecipeViewModel.observeUserSavedRecipes(currentUser)
 
         recipeId.let {
             currentRecipeViewModel.getRecipeById(it)
@@ -93,6 +99,21 @@ class DetailedRecipeActivity : AppCompatActivity() {
                 loadRecipeData()
             }
         }
+
+        // Switch between 'saved' and 'save'
+        currentRecipeViewModel.savedRecipes.observe(this) { savedRecipes ->
+            Log.d("DetailedRecipeActivity", "Saved Recipes: $savedRecipes")
+            Log.d("DetailedRecipeActivity", "Current Recipe ID: $recipeId")
+            val isSaved = savedRecipes.any { it.id == recipeId }
+            if (isSaved) {
+                saveButton.text = "Saved"
+                saveButton.setIconResource(R.drawable.bookmark_filled)
+            } else {
+                saveButton.text = "Save"
+                saveButton.setIconResource(R.drawable.bookmark_outline)
+            }
+        }
+
 
     }
 
@@ -116,8 +137,20 @@ class DetailedRecipeActivity : AppCompatActivity() {
         }
 
         saveButton.setOnClickListener {
-            // Handle save button click
+            Log.d("DetailedRecipeActivity", "Save button clicked")
+            val currentRecipeId = recipeId
+            if (currentRecipeId.isNotEmpty()) {
+                currentRecipeViewModel.savedRecipes.value?.let { savedRecipes ->
+                    val isSaved = savedRecipes.any { it.id == currentRecipeId }
+                    if (isSaved) {
+                        currentRecipeViewModel.unsaveRecipe(currentUser, currentRecipeId)
+                    } else {
+                        currentRecipeViewModel.saveRecipe(currentUser, currentRecipeId)
+                    }
+                }
+            }
         }
+
         backButton.setOnClickListener {
             finish()
         }
@@ -128,18 +161,32 @@ class DetailedRecipeActivity : AppCompatActivity() {
 
         private fun loadRecipeData() {
             val title = currentRecipeViewModel.currentRecipe.value?.name
-
             headerRecipeName.text = title
             recipeTitle.text = title
             // have this deal with fetching the user + name later
             // creatorName.text = currentRecipeViewModel.currentRecipe.value?.creatorName ?: "N/A"
             servings.text = "Serves ${currentRecipeViewModel.currentRecipe.value?.servings ?: 0}"
+
             rating.text =
                 (currentRecipeViewModel.currentRecipe.value?.averageStars ?: "4 ★★★★★").toString()
             // set image
+            val imageUri = currentRecipeViewModel.currentRecipe.value?.photo
+            // Log.d("DetailedRecipeActivity", "Image URI: $imageUri")
+            if (imageUri != null && imageUri.isNotEmpty()) {
+                Glide.with(this)
+                    .load(imageUri) // Load the image from URI
+                    .placeholder(R.drawable.outline_photo_camera_black_24) // Default image while loading
+                    .error(R.drawable.outline_photo_camera_black_24) // Image if loading fails
+                    .into(recipeImage) // Target ImageView
+            } else {
+                recipeImage.setImageResource(R.drawable.outline_photo_camera_black_24)
+            }
 
-
-
+            // remove edit button if they aren't the creator
+            if (currentRecipeViewModel.currentRecipe.value?.creatorId != currentUser) {
+                editButton.visibility = View.GONE
+            }
+            currentRecipeViewModel.observeUserSavedRecipes(currentUser)
         }
 }
 
