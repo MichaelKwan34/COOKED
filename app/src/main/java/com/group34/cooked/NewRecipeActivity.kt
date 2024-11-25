@@ -135,6 +135,7 @@ class NewRecipeActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 Log.w("NewRecipe", "Error adding document", e)
+                Toast.makeText(this, "Error publishing recipe", Toast.LENGTH_SHORT).show()
             }
 
         finish()
