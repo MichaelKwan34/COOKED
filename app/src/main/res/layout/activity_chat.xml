@@ -3,47 +3,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
+    android:background="#F5F5F5">
 
+    <!-- Header Bar -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:background="#95DFAA">
+        android:layout_height="wrap_content"
+        android:background="#95DFAA"
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="ChatGPT"
-            android:textAlignment="center"
-            android:textColor="@color/white"
+            android:text="Recipe Generator"
+            android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
-
     </RelativeLayout>
 
-    <EditText
-        android:id="@+id/inputField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Type your message here..." />
-
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Send" />
-
+    <!-- Chat Log Section -->
     <TextView
         android:id="@+id/chatOutput"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="#F5F5F5"
         android:padding="10dp"
         android:scrollbars="vertical"
-        android:text="Welcome to ChatGPT!\n"
+        android:text="Welcome to your recipe generator!\n"
         android:textSize="16sp" />
+
+    <!-- Message Input and Send Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:layout_gravity="bottom">
+
+        <!-- Message Input Field -->
+        <EditText
+            android:id="@+id/inputField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Type your message here..."
+            android:padding="10dp"
+            android:background="@drawable/rounded_edittext"
+            android:textSize="16sp"/>
+
+        <!-- Send Button -->
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+
+            android:text="Send"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+    </LinearLayout>
 
 </LinearLayout>

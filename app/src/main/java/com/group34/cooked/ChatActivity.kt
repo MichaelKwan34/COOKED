@@ -47,24 +47,24 @@ class ChatActivity : AppCompatActivity() {
 
         // Prepare request
         val messages = listOf(Message("user", message))
-        val request = ChatRequest("gpt-3.5turbo", messages)
+        val request = ChatRequest("gpt-3.5-turbo", messages)
 
         // Make the API call
         service.sendMessage(request).enqueue(object : retrofit2.Callback<ChatResponse> {
             override fun onResponse(call: Call<ChatResponse>, response: retrofit2.Response<ChatResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     val reply = response.body()?.choices?.get(0)?.message?.content ?: "No reply"
-                    chatOutput.append("ChatGPT: $reply\n")
+                    chatOutput.append("Generator: $reply\n")
                 } else {
                     val errorBody = response.errorBody()?.string() ?: "No error body"
-                    chatOutput.append("ChatGPT: Failed to fetch response.\n")
+                    chatOutput.append("Generator: Failed to fetch response.\n")
                     Log.e("ChatGPTError", "Error response: $errorBody")
                 }
             }
 
 
             override fun onFailure(call: Call<ChatResponse>, t: Throwable) {
-                chatOutput.append("ChatGPT: Error - ${t.message}\n")
+                chatOutput.append("Generator: Error - ${t.message}\n")
             }
         })
     }
