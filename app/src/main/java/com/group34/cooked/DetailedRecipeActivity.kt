@@ -16,8 +16,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.group34.cooked.models.Ingredient
 import com.group34.cooked.models.Instruction
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import kotlin.math.floor
+import kotlin.math.round
 
 class DetailedRecipeActivity : AppCompatActivity() {
 
@@ -164,11 +172,30 @@ class DetailedRecipeActivity : AppCompatActivity() {
             headerRecipeName.text = title
             recipeTitle.text = title
             // have this deal with fetching the user + name later
-            // creatorName.text = currentRecipeViewModel.currentRecipe.value?.creatorName ?: "N/A"
+            val creatorId = currentRecipeViewModel.currentRecipe.value?.creatorId
+            Log.d("DetailedRecipeActivity", "Creator ID: $creatorId")
+            if (creatorId != "" && creatorId != null) {
+                fetchCreatorData(creatorId)
+            }
             servings.text = "Serves ${currentRecipeViewModel.currentRecipe.value?.servings ?: 0}"
 
-            rating.text =
-                (currentRecipeViewModel.currentRecipe.value?.averageStars ?: "4 ★★★★★").toString()
+            // I KNOW this is really scuffed, I'm just doing this for the demo
+            val stars = currentRecipeViewModel.currentRecipe.value?.averageStars?.let { round(it) }
+            if (stars?.toInt() == 1) {
+                rating.text = "${currentRecipeViewModel.currentRecipe.value?.averageStars} ★"
+            } else if (stars?.toInt() == 2) {
+                rating.text = "${currentRecipeViewModel.currentRecipe.value?.averageStars} ★★"
+            }
+            else if (stars?.toInt() == 3) {
+                rating.text = "${currentRecipeViewModel.currentRecipe.value?.averageStars} ★★★"
+            }
+            else if (stars?.toInt() == 4) {
+                rating.text = "${currentRecipeViewModel.currentRecipe.value?.averageStars} ★★★★"
+            }
+            else if (stars?.toInt() == 5) {
+                rating.text = "${currentRecipeViewModel.currentRecipe.value?.averageStars} ★★★★★"
+            }
+
             // set image
             val imageUri = currentRecipeViewModel.currentRecipe.value?.photo
             // Log.d("DetailedRecipeActivity", "Image URI: $imageUri")
@@ -188,5 +215,37 @@ class DetailedRecipeActivity : AppCompatActivity() {
             }
             currentRecipeViewModel.observeUserSavedRecipes(currentUser)
         }
+
+
+    private fun fetchCreatorData(creatorId: String) {
+        Log.d("DetailedRecipeActivity", "Fetching creator data for ID: $creatorId")
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val userRef = FirebaseFirestore.getInstance().collection("users").document(creatorId)
+                val document = userRef.get().await() // Use Kotlin coroutines for async tasks
+                withContext(Dispatchers.Main) {
+                    if (document.exists()) {
+                        val creatorNameValue = document.getString("name") ?: "N/A"
+                        val creatorPhotoUrl = document.getString("photo")
+                        creatorName.text = creatorNameValue
+                        if (!creatorPhotoUrl.isNullOrEmpty()) {
+                            Glide.with(this@DetailedRecipeActivity)
+                                .load(creatorPhotoUrl) // Load the profile picture
+                                .placeholder(R.drawable.outline_photo_camera_white_24)
+                                .error(R.drawable.outline_photo_camera_white_24)
+                                .into(creatorImage)
+                        } else {
+                            creatorImage.setImageResource(R.drawable.outline_photo_camera_white_24)
+                        }
+                    } else {
+                        Log.e("DetailedRecipeActivity", "User document does not exist")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("DetailedRecipeActivity", "Error fetching creator data: ${e.message}")
+            }
+        }
+    }
+
 }
 
