@@ -1,22 +1,30 @@
 package com.group34.cooked
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.group34.cooked.models.Ingredient
 import com.group34.cooked.models.Instruction
 import com.group34.cooked.models.Recipe
+import com.group34.cooked.models.RecipeCreationStatus
 
-class NewRecipeViewModel : ViewModel() {
+class NewRecipeViewModel(
+    private val imageRepository: ImageRepository = ImageRepository(),
+    private val recipeRepository: RecipeRepository = RecipeRepository()
+) : ViewModel() {
     private val _recipe = MutableLiveData<Recipe>()
     val recipe: LiveData<Recipe> get() = _recipe
 
+    private val _photoBitmap = MutableLiveData<Bitmap?>()
+    val photoBitmap: LiveData<Bitmap?> get() = _photoBitmap
+
     init {
-        _recipe.value = Recipe(name = "", course = "", difficulty = "", duration = 0, servings = 0, status = "")
+        _recipe.value = Recipe()
+        _photoBitmap.value = null
     }
 
     fun setName(name: String) {
@@ -39,10 +47,6 @@ class NewRecipeViewModel : ViewModel() {
     fun setDurationMinute(minutes: Int) {
         val newDuration = recipe.value!!.duration + minutes
         _recipe.value = _recipe.value?.copy(duration = newDuration)
-    }
-
-    fun setDuration(duration: Int) {
-        _recipe.value = _recipe.value?.copy(duration = duration)
     }
 
     fun setServings(servings: Int) {
@@ -75,6 +79,11 @@ class NewRecipeViewModel : ViewModel() {
         _recipe.value = _recipe.value?.apply {
             instructions.remove(instruction)
         }
+
+        // Reorder the step numbers
+        _recipe.value?.instructions?.forEachIndexed { index, newInstruction ->
+            newInstruction.stepNumber = index + 1
+        }
     }
 
     fun setAverageStars(averageStars: Double) {
@@ -89,28 +98,30 @@ class NewRecipeViewModel : ViewModel() {
         _recipe.value = _recipe.value?.copy(photo = url)
     }
 
+    fun setPhotoBitmap(bitmap: Bitmap?) {
+        _photoBitmap.value = bitmap
+    }
+
+
     // Returns a task that adds the recipe to the firestore
     // Use the return to check if add is successful or not
-    fun saveRecipeToFireStore(): Task<DocumentReference> {
-        // Get the reference once added
-        val recipeRef = Firebase.firestore
-            .collection("recipes")
-            .add(_recipe.value!!)
+    fun saveRecipeToFireStore(status: RecipeCreationStatus): Task<DocumentReference> {
+        setStatus(status.toString())
 
-
-        // Add ingredients and instructions if the recipe is added
-        recipeRef.addOnSuccessListener { documentReference ->
-            val ingredientsCollectionRef = documentReference.collection("ingredients")
-            _recipe.value!!.ingredients.forEach { ingredient ->
-                ingredientsCollectionRef.add(ingredient)
-            }
-
-            val instructionsCollectionRef = documentReference.collection("instructions")
-            _recipe.value!!.instructions.forEach { instruction ->
-                instructionsCollectionRef.add(instruction)
-            }
+        // Save recipe without image
+        if (_photoBitmap.value == null) {
+            return recipeRepository.saveRecipe(_recipe.value!!)
         }
 
-        return recipeRef
+        // Save recipe with image
+        val uriTask = imageRepository.uploadImage(_photoBitmap.value)
+        return uriTask.continueWithTask { task ->
+            if (task.isSuccessful) {
+                setPhotoUri(task.result.toString())
+                recipeRepository.saveRecipe(_recipe.value!!)
+            } else {
+                Tasks.forException(Exception("Error saving recipe with image: ${task.exception}"))
+            }
+        }
     }
 }

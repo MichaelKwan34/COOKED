@@ -14,6 +14,7 @@ activity = "1.9.3"
 constraintlayout = "2.2.0"
 googleServices = "4.4.2"
 firebaseAuthKtx = "23.1.0"
+materialVersion = "1.9.0"
 sendgridJava = "5.0.0-rc.1"
 kotlinPlugin = "1.8.10"
 firebaseDatabaseKtx = "21.0.0"
@@ -32,6 +33,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+material-v190 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 sendgrid-java = { group = "com.sendgrid", name = "sendgrid-java", version.ref = "sendgridJava" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 

@@ -1,14 +1,10 @@
 package com.group34.cooked.fragments
 
 import android.Manifest.permission.CAMERA
-import android.app.ProgressDialog
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -22,14 +18,14 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.storage.FirebaseStorage
 import com.group34.cooked.NewRecipeActivity
 import com.group34.cooked.NewRecipeViewModel
 import com.group34.cooked.R
+import com.group34.cooked.SpinnerAdapter
 import com.group34.cooked.databinding.FragmentNewRecipeInformationBinding
+import com.group34.cooked.models.Course
 import com.group34.cooked.models.RecipeCreationStatus
 import com.group34.cooked.models.RecipeDifficulty
-import java.io.ByteArrayOutputStream
 
 class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_information) {
     private var _binding: FragmentNewRecipeInformationBinding? = null
@@ -39,23 +35,18 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     private lateinit var photo: ImageView
     private lateinit var btnNewPhoto: TextView
     private lateinit var etName: EditText
-    private lateinit var etCourse: EditText
+    private lateinit var spCourse: Spinner
     private lateinit var spDifficulty: Spinner
     private lateinit var npDurationHour: NumberPicker
     private lateinit var npDurationMinute: NumberPicker
     private lateinit var tvDurationDescription: TextView
     private lateinit var etServings: EditText
     private lateinit var btnDraft: Button
-    private lateinit var btnPublish: Button
-
-    private var selectDifficulty = RecipeDifficulty.EASY.id
 
     private lateinit var newRecipeViewModel: NewRecipeViewModel
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Void?>
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
-
-    private lateinit var storage: FirebaseStorage
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,26 +57,22 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         photo = binding.newRecipePhoto
         btnNewPhoto = binding.newRecipePhotoButton
         etName = binding.newRecipeName
-        etCourse = binding.newRecipeCourse
+        spCourse = binding.newRecipeCourse
         spDifficulty = binding.newRecipeDifficulty
         npDurationHour = binding.newRecipeDurationHours
         npDurationMinute = binding.newRecipeDurationMinutes
         tvDurationDescription = binding.newRecipeDurationDescription
         etServings = binding.newRecipeServings
         btnDraft = binding.newRecipeDraft
-        btnPublish = binding.newRecipePublish
 
         // Shared view model with activity
         newRecipeViewModel = ViewModelProvider(requireActivity())[NewRecipeViewModel::class.java]
-
-        // Initialize Firebase storage
-        storage = FirebaseStorage.getInstance()
 
         // Use camera to take photo
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             if (bitmap != null) {
                 photo.setImageBitmap(bitmap)
-                uploadImage(bitmap)
+                newRecipeViewModel.setPhotoBitmap(bitmap)
             }
         }
 
@@ -100,6 +87,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         initButtons()
         initDuration()
         initDifficultySpinner()
+        initCourseSpinner()
 
         updateViewModel()
     }
@@ -118,11 +106,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         }
 
         btnDraft.setOnClickListener {
-            save(RecipeCreationStatus.DRAFT)
-        }
-
-        btnPublish.setOnClickListener {
-            save(RecipeCreationStatus.PUBLISHED)
+            saveDraft()
         }
     }
 
@@ -136,50 +120,36 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         npDurationMinute.wrapSelectorWheel = false
     }
 
+    // Initialize the difficulty spinner with item selection listener
     private fun initDifficultySpinner() {
-        // Create an ArrayAdapter using the difficulty array and a default spinner layout
-        activity?.applicationContext?.let {
-            ArrayAdapter.createFromResource(
-                it,
-                R.array.difficulty_array,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spDifficulty.adapter = adapter
+        val difficulties = RecipeDifficulty.entries.map { it.toString() }.toTypedArray()
+        SpinnerAdapter.createDefaultSpinnerAdapter(requireContext(), difficulties, spDifficulty) { difficulty ->
+            newRecipeViewModel.setDifficulty(difficulty)
+        }
+    }
 
-                // Handle spinner item selection
-                spDifficulty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        selectDifficulty = position
-                        newRecipeViewModel.setDifficulty(RecipeDifficulty.findById(selectDifficulty).value)
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        TODO("Not yet implemented")
-                    }
-                }
-            }
+    // Initialize the course spinner with item selection listener
+    private fun initCourseSpinner() {
+        val courses = Course.entries.map { it.toString() }.toTypedArray()
+        SpinnerAdapter.createDefaultSpinnerAdapter(requireContext(), courses, spCourse) { course ->
+            newRecipeViewModel.setCourse(course)
         }
     }
 
     // Use listeners to update the view model
-    // Difficulty is updated by initDifficultySpinner
     private fun updateViewModel() {
         etName.addTextChangedListener {
-            if (etName.text.trim().isNotEmpty()) {
+            if (etName.text.isEmpty()) {
+                newRecipeViewModel.setName("")
+            } else {
                 newRecipeViewModel.setName(etName.text.trim().toString())
             }
         }
 
-        etCourse.addTextChangedListener {
-            if (etCourse.text.trim().isNotEmpty()) {
-                newRecipeViewModel.setCourse(etCourse.text.trim().toString())
-            }
-        }
-
         etServings.addTextChangedListener {
-            if (etServings.text.trim().isNotEmpty()) {
+            if (etServings.text.isEmpty()) {
+                newRecipeViewModel.setServings(0)
+            } else {
                 newRecipeViewModel.setServings(etServings.text.trim().toString().toInt())
             }
         }
@@ -195,13 +165,9 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
 
     // Validates the input fields
     // Returns true if valid. Otherwise false
-    private fun validateInput(): Boolean {
+    fun areInputsValid(): Boolean {
         // Check edit text fields for empty values
-        val etValues = listOf(
-            etName,
-            etCourse,
-            etServings,
-        )
+        val etValues = listOf(etName, etServings)
         val isEtEmpty = etValues.stream()
             .filter {
                 it.text?.isEmpty() ?: true
@@ -227,53 +193,17 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     }
 
     // Save the recipe with the given status
-    private fun save(status: RecipeCreationStatus) {
-        if (!validateInput()) {
-            return
-        }
-        newRecipeViewModel.setStatus(status.value)
-
-        // Save the recipe to Firestore
+    private fun saveDraft() {
         newRecipeViewModel
-            .saveRecipeToFireStore()
+            .saveRecipeToFireStore(RecipeCreationStatus.DRAFT)
             .addOnSuccessListener { documentReference ->
                 Log.d("NewRecipe", "DocumentSnapshot added with ID: ${documentReference.id}")
             }
             .addOnFailureListener { e ->
                 Log.w("NewRecipe", "Error adding document", e)
+                Toast.makeText(context, "Error saving draft", Toast.LENGTH_SHORT).show()
             }
 
         (activity as? NewRecipeActivity)?.finish()
-    }
-
-    // Uploads an image to Firebase Storage
-    private fun uploadImage(bitmap: Bitmap) {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val imageData = baos.toByteArray()
-
-        // Show progress dialog
-        val progressDialog = ProgressDialog(requireContext())
-        progressDialog.setTitle("Uploading Image...")
-        progressDialog.setCancelable(false)
-        progressDialog.show()
-
-        // TODO: Involve user ID in file name (either as new folder or as part of the file name)
-        val fileName = "images/${System.currentTimeMillis()}.jpg"
-        val storageRef = storage.reference.child(fileName)
-
-        // Upload image
-        storageRef.putBytes(imageData)
-            .addOnSuccessListener {
-                storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    Log.d("Firebase", "Image uploaded: $uri")
-                    newRecipeViewModel.setPhotoUri(uri.toString())
-                    if (progressDialog.isShowing) progressDialog.dismiss()
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firebase", "Error uploading image", e)
-                if (progressDialog.isShowing) progressDialog.dismiss()
-            }
     }
 }

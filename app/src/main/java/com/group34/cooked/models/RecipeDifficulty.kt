@@ -5,10 +5,8 @@ enum class RecipeDifficulty(val id: Int, val value: String) {
     MEDIUM(1, "Medium"),
     HARD(2, "Hard");
 
-    companion object {
-        fun findById(id: Int): RecipeDifficulty {
-            return entries.first { it.id == id }
-        }
+    override fun toString(): String {
+        return value
     }
 }
 

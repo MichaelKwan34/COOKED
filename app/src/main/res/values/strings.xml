@@ -24,4 +24,8 @@
         <item>Medium</item>
         <item>Hard</item>
     </string-array>
+
+    <string name="serving_size_template">Serves %d</string>
+    <string name="duration_template">%d MINS</string>
+
 </resources>

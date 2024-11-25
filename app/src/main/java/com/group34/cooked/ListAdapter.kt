@@ -1,6 +1,7 @@
 package com.group34.cooked
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +48,9 @@ class ListAdapter<T>(
                     deleteIv.visibility = View.GONE
                 } else {
                     deleteIv.setOnClickListener {
+                        Log.d("ListAdapter", "Removing ingredient: $item")
                         viewModel?.removeIngredient(item)
+                        notifyDataSetChanged()
                     }
                 }
 
@@ -60,14 +63,16 @@ class ListAdapter<T>(
                 stepTv.text = "${item.stepNumber}. "
                 descriptionTv.text = item.description
 
-//                val deleteIv = view.findViewById<ImageView>(R.id.instruction_item_delete)
-//                if (isPublish) {
-//                    deleteIv.visibility = View.GONE
-//                } else {
-//                    deleteIv.setOnClickListener {
-//                        viewModel?.removeInstruction(item)
-//                    }
-//                }
+                val deleteIv = view.findViewById<ImageView>(R.id.instruction_item_delete)
+                if (isPublish) {
+                    deleteIv.visibility = View.GONE
+                } else {
+                    deleteIv.setOnClickListener {
+                        Log.d("ListAdapter", "Removing instruction: $item")
+                        viewModel?.removeInstruction(item)
+                        notifyDataSetChanged()
+                    }
+                }
 
                 view
             }

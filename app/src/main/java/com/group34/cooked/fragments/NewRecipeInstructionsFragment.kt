@@ -1,11 +1,16 @@
 package com.group34.cooked.fragments
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ListView
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.group34.cooked.AddInstructionActivity
 import com.group34.cooked.ListAdapter
 import com.group34.cooked.NewRecipeViewModel
 import com.group34.cooked.R
@@ -20,6 +25,8 @@ class NewRecipeInstructionsFragment : Fragment(R.layout.fragment_new_recipe_inst
     private lateinit var listInstructions: ListView
 
     private lateinit var newRecipeViewModel: NewRecipeViewModel
+
+    private lateinit var addInstructionLauncher: ActivityResultLauncher<Intent>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,14 +46,28 @@ class NewRecipeInstructionsFragment : Fragment(R.layout.fragment_new_recipe_inst
         }
 
         btnNewInstruction.setOnClickListener {
-            // TODO: Validate input and implement
-            val instruction = Instruction(1, "Preheat oven to 350°F")
-            newRecipeViewModel.addInstruction(instruction)
+            val intent = Intent(requireContext(), AddInstructionActivity::class.java)
+
+            // Add step number to intent
+            val stepNumber = newRecipeViewModel.recipe.value?.instructions?.size?.plus(1) ?: 1
+            intent.putExtra("stepNumber", stepNumber)
+
+            addInstructionLauncher.launch(intent)
+        }
+
+        // Register the launcher to handle the result
+        addInstructionLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.getParcelableExtra<Instruction>("instruction")?.let { instruction ->
+                    newRecipeViewModel.addInstruction(instruction)
+                }
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        addInstructionLauncher.unregister()
     }
 }

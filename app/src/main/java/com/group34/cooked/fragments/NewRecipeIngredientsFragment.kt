@@ -64,5 +64,6 @@ class NewRecipeIngredientsFragment : Fragment(R.layout.fragment_new_recipe_ingre
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        addIngredientLauncher.unregister()
     }
 }

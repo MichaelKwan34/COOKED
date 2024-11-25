@@ -13,7 +13,8 @@
         android:layout_height="250dp"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        android:background="@color/redAccent" />
+        android:background="@color/redAccent"
+        android:visibility="gone" />
 
     <!--  Title  -->
     <TextView
@@ -22,74 +23,79 @@
         android:layout_height="wrap_content"
         android:background="@color/background"
         android:paddingVertical="4dp"
-        android:paddingStart="4dp"
+        android:paddingHorizontal="4dp"
         android:textColor="@color/textPrimary"
         android:textSize="24sp"
         android:textStyle="bold" />
 
     <!--  Description  -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
         android:padding="10dp">
 
+        <!--  Creator  -->
         <TextView
+            android:id="@+id/new_recipe_publish_creator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:drawablePadding="4dp"
             android:gravity="center"
-            android:text="Me"
-            app:drawableStartCompat="@drawable/account_circle_24" />
+            android:maxLength="18"
+            app:drawableStartCompat="@drawable/account_circle_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <LinearLayout
+        <!--  Servings  -->
+        <TextView
+            android:id="@+id/new_recipe_publish_servings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="end">
+            android:drawablePadding="6dp"
+            android:layout_marginEnd="6dp"
+            app:drawableStartCompat="@drawable/serving_dome_black_14"
+            app:layout_constraintEnd_toStartOf="@+id/stars"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-            <TextView
-                android:id="@+id/new_recipe_publish_servings"
+        <!--  Star Ratings  -->
+        <LinearLayout
+            android:id="@+id/stars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="6dp"
-                app:drawableStartCompat="@drawable/serving_dome_black_14" />
+                android:src="@drawable/star_gray_24" />
 
-            <LinearLayout
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp">
+                android:src="@drawable/star_gray_24" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/star_gray_24" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/star_gray_24" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/star_gray_24" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/star_gray_24" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/star_gray_24" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/star_gray_24" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/star_gray_24" />
-
-            </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/star_gray_24" />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--  Ingredients  -->
     <LinearLayout
@@ -102,6 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
             android:text="Ingredients"
             android:textColor="@color/textForm"
             android:textStyle="bold" />
@@ -126,6 +133,7 @@
             android:layout_height="wrap_content"
             android:text="Instructions"
             android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
             android:textColor="@color/textForm"
             android:textStyle="bold" />
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundDark">
+
+    <!--  Toolbar  -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/new_recipe_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Instruction"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/background"
+            android:layout_gravity="center" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <!--  Form  -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textForm"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="Instruction" />
+
+        <EditText
+            android:id="@+id/add_instruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:paddingBottom="60dp"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/save_instruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingHorizontal="60dp"
+            android:layout_marginTop="20dp"
+            android:text="Save"
+            android:backgroundTint="@color/blueAccent"
+            app:cornerRadius="10dp" />
+
+    </LinearLayout>
+</LinearLayout>
