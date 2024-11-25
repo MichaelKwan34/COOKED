@@ -139,11 +139,19 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     // Use listeners to update the view model
     private fun updateViewModel() {
         etName.addTextChangedListener {
-            newRecipeViewModel.setName(etName.text.trim().toString())
+            if (etName.text.isEmpty()) {
+                newRecipeViewModel.setName("")
+            } else {
+                newRecipeViewModel.setName(etName.text.trim().toString())
+            }
         }
 
         etServings.addTextChangedListener {
-            newRecipeViewModel.setServings(etServings.text.trim().toString().toInt())
+            if (etServings.text.isEmpty()) {
+                newRecipeViewModel.setServings(0)
+            } else {
+                newRecipeViewModel.setServings(etServings.text.trim().toString().toInt())
+            }
         }
 
         npDurationHour.setOnValueChangedListener { _, _, value ->
