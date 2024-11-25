@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:text="Add Ingredient"
         android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="10dp"
         android:textColor="@color/textForm"
         app:drawableStartCompat="@drawable/add_gray_24" />
 

@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgroundDark"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="vertical">
 
         <!--  OCR  -->
@@ -28,13 +28,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 android:text="Food Photo"
                 android:textColor="@color/textForm" />
 
@@ -75,13 +76,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 android:text="Name"
                 android:textColor="@color/textForm" />
 
@@ -90,7 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/background"
-                android:inputType="text" />
+                android:inputType="text"
+                android:paddingHorizontal="8dp"/>
 
         </LinearLayout>
 
@@ -98,13 +101,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 android:text="Course"
                 android:textColor="@color/textForm" />
 
@@ -112,8 +116,7 @@
                 android:id="@+id/new_recipe_course"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/background"
-                android:paddingHorizontal="10dp" />
+                android:background="@color/background" />
 
         </LinearLayout>
 
@@ -121,13 +124,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 android:text="Difficulty"
                 android:textColor="@color/textForm" />
 
@@ -135,8 +139,7 @@
                 android:id="@+id/new_recipe_difficulty"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/background"
-                android:paddingHorizontal="10dp" />
+                android:background="@color/background" />
 
         </LinearLayout>
 
@@ -144,13 +147,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 android:text="Duration"
                 android:textColor="@color/textForm" />
 
@@ -192,13 +196,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 android:text="Number Servings"
                 android:textColor="@color/textForm" />
 
@@ -207,41 +211,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/background"
-                android:inputType="numberDecimal"
-                android:digits="0123456789" />
+                android:inputType="number"
+                android:digits="0123456789"
+                android:paddingHorizontal="8dp" />
 
         </LinearLayout>
 
-        <!--  Save Draft and Publish  -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="60dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+        <!--  Draft  -->
+        <Button
+            android:id="@+id/new_recipe_draft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="20dp"
+            android:backgroundTint="@color/blueAccent"
+            android:paddingHorizontal="40dp"
+            android:text="Save as Draft"
+            app:cornerRadius="10dp" />
 
-            <Button
-                android:id="@+id/new_recipe_draft"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/blueAccent"
-                android:text="Save as Draft"
-                app:cornerRadius="10dp" />
-
-            <Button
-                android:id="@+id/new_recipe_publish"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/blueAccent"
-                android:text="Publish Recipe"
-                app:cornerRadius="10dp" />
-
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>
 

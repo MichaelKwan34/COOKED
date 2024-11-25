@@ -1,18 +1,22 @@
 package com.group34.cooked
 
 import android.graphics.Bitmap
+import android.net.Uri
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 
 class ImageRepository {
 
-    // Upload image to Firebase Storage and return the download URL on success
-    // Otherwise, return the exception on failure
-    fun uploadImage(bitmap: Bitmap?, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+    // Upload image to Firebase Storage and return a task that contains the URI of the image
+    // Otherwise, return an exception if the task fails
+    fun uploadImage(
+        bitmap: Bitmap?
+    ): Task<Uri> {
         if (bitmap == null) {
-            onFailure(Exception("Bitmap is null"))
-            return
+            return Tasks.forException(Exception("Bitmap is null"))
         }
 
         val baos = ByteArrayOutputStream()
@@ -24,19 +28,15 @@ class ImageRepository {
         val fileName = "images/${creatorId}/${timestamp}.jpg"
         val storageRef = FirebaseStorage.getInstance().reference.child(fileName)
 
-        // Upload image
-        storageRef.putBytes(imageData)
-            .addOnSuccessListener {
-                storageRef.downloadUrl
-                    .addOnSuccessListener { uri ->
-                        onSuccess(uri.toString())
-                    }
-                    .addOnFailureListener { e ->
-                        onFailure(e)
-                    }
-            }
-            .addOnFailureListener { e ->
-                onFailure(e)
+        // Upload image and return the download URL
+        return storageRef.putBytes(imageData)
+            .continueWithTask { task ->
+                if (task.isSuccessful) {
+                    storageRef.downloadUrl
+                } else {
+                    Tasks.forException(task.exception
+                        ?: Exception("Unknown exception found while uploading image"))
+                }
             }
     }
 }

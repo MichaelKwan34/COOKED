@@ -14,4 +14,8 @@ class MyFragmentStateAdapter(activity: FragmentActivity, var list: ArrayList<Fra
     override fun getItemCount(): Int {
         return list.size
     }
+
+    fun getFragment(position: Int): Fragment {
+        return list[position]
+    }
 }

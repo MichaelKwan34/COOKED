@@ -31,6 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/trash_can_pink_14" />
+        android:src="@drawable/trash_can_pink_16" />
 
 </RelativeLayout>

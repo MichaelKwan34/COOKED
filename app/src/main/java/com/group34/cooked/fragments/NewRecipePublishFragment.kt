@@ -18,6 +18,7 @@ class NewRecipePublishFragment : Fragment(R.layout.fragment_new_recipe_publish) 
 
     private lateinit var ivPhoto: ImageView
     private lateinit var tvTitle: TextView
+    private lateinit var tvCreator: TextView
     private lateinit var tvServings: TextView
     private lateinit var lvIngredients: ListView
     private lateinit var lvInstructions: ListView
@@ -30,6 +31,7 @@ class NewRecipePublishFragment : Fragment(R.layout.fragment_new_recipe_publish) 
 
         ivPhoto = binding.newRecipePublishPhoto
         tvTitle = binding.newRecipePublishTitle
+        tvCreator = binding.newRecipePublishCreator
         tvServings = binding.newRecipePublishServings
         lvIngredients = binding.newRecipePublishIngredients
         lvInstructions = binding.newRecipePublishInstructions
@@ -39,12 +41,16 @@ class NewRecipePublishFragment : Fragment(R.layout.fragment_new_recipe_publish) 
 
         // Observe photo changes
         newRecipeViewModel.photoBitmap.observe(viewLifecycleOwner) { photoBitmap ->
-            ivPhoto.setImageBitmap(photoBitmap)
+            if (photoBitmap != null) {
+                ivPhoto.visibility = View.VISIBLE
+                ivPhoto.setImageBitmap(photoBitmap)
+            }
         }
 
         // Observe recipe changes
         newRecipeViewModel.recipe.observe(viewLifecycleOwner) { recipe ->
             tvTitle.text = recipe.name
+            tvCreator.text = "Me" // TODO: Replace with user's first name. Limit it to 12 chars
             tvServings.text =  context?.getString(R.string.serving_size_template, recipe.servings)
             lvIngredients.adapter = ListAdapter(requireContext(), recipe.ingredients, isPublish = true)
             lvInstructions.adapter = ListAdapter(requireContext(), recipe.instructions, isPublish = true)

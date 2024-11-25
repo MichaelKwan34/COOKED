@@ -6,60 +6,90 @@
     android:background="@color/backgroundDark"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="4dp"
-        android:textColor="@color/textForm"
-        android:text="Name" />
+    <!--  Toolbar  -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/new_recipe_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        android:layout_marginBottom="20dp">
 
-    <EditText
-        android:id="@+id/add_ingredient_name"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Ingredient"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/background"
+            android:layout_gravity="center" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <!--  Form  -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:layout_marginBottom="10dp"
-        android:background="@color/background" />
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textForm"
-        android:layout_marginStart="4dp"
-        android:text="Quantity" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/textForm"
+            android:text="Name" />
 
-    <EditText
-        android:id="@+id/add_ingredient_quantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:layout_marginBottom="10dp"
-        android:background="@color/background" />
+        <EditText
+            android:id="@+id/add_ingredient_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="text"
+            android:layout_marginBottom="10dp"
+            android:paddingHorizontal="8dp"
+            android:background="@color/background" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textForm"
-        android:layout_marginStart="4dp"
-        android:text="Unit"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textForm"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="Quantity" />
 
-    <Spinner
-        android:id="@+id/add_ingredient_unit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:paddingHorizontal="10dp" />
+        <EditText
+            android:id="@+id/add_ingredient_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="10dp"
+            android:paddingHorizontal="8dp"
+            android:background="@color/background" />
 
-    <Button
-        android:id="@+id/save_ingredient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingHorizontal="60dp"
-        android:layout_marginTop="20dp"
-        android:text="Save"
-        android:backgroundTint="@color/blueAccent"
-        app:cornerRadius="10dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textForm"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="Unit"/>
 
+        <Spinner
+            android:id="@+id/add_ingredient_unit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/background" />
+
+        <Button
+            android:id="@+id/save_ingredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingHorizontal="60dp"
+            android:layout_marginTop="20dp"
+            android:text="Save"
+            android:backgroundTint="@color/blueAccent"
+            app:cornerRadius="10dp" />
+
+    </LinearLayout>
 </LinearLayout>

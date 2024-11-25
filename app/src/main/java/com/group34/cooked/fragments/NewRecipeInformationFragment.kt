@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.storage.FirebaseStorage
 import com.group34.cooked.NewRecipeActivity
 import com.group34.cooked.NewRecipeViewModel
 import com.group34.cooked.R
@@ -43,14 +42,11 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     private lateinit var tvDurationDescription: TextView
     private lateinit var etServings: EditText
     private lateinit var btnDraft: Button
-    private lateinit var btnPublish: Button
 
     private lateinit var newRecipeViewModel: NewRecipeViewModel
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Void?>
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
-
-    private lateinit var storage: FirebaseStorage
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,13 +64,9 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         tvDurationDescription = binding.newRecipeDurationDescription
         etServings = binding.newRecipeServings
         btnDraft = binding.newRecipeDraft
-        btnPublish = binding.newRecipePublish
 
         // Shared view model with activity
         newRecipeViewModel = ViewModelProvider(requireActivity())[NewRecipeViewModel::class.java]
-
-        // Initialize Firebase storage
-        storage = FirebaseStorage.getInstance()
 
         // Use camera to take photo
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
@@ -114,11 +106,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
         }
 
         btnDraft.setOnClickListener {
-            save(RecipeCreationStatus.DRAFT)
-        }
-
-        btnPublish.setOnClickListener {
-            save(RecipeCreationStatus.PUBLISHED)
+            saveDraft()
         }
     }
 
@@ -173,7 +161,7 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
 
     // Validates the input fields
     // Returns true if valid. Otherwise false
-    private fun areInputsValid(): Boolean {
+    fun areInputsValid(): Boolean {
         // Check edit text fields for empty values
         val etValues = listOf(etName, etServings)
         val isEtEmpty = etValues.stream()
@@ -201,16 +189,9 @@ class NewRecipeInformationFragment : Fragment(R.layout.fragment_new_recipe_infor
     }
 
     // Save the recipe with the given status
-    private fun save(status: RecipeCreationStatus) {
-        if (status == RecipeCreationStatus.PUBLISHED && !areInputsValid()) {
-            Toast.makeText(context, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
-            return
-        }
-        newRecipeViewModel.setStatus(status.toString())
-
-        // Save the recipe to Firestore
+    private fun saveDraft() {
         newRecipeViewModel
-            .saveRecipeToFireStore()
+            .saveRecipeToFireStore(RecipeCreationStatus.DRAFT)
             .addOnSuccessListener { documentReference ->
                 Log.d("NewRecipe", "DocumentSnapshot added with ID: ${documentReference.id}")
             }
