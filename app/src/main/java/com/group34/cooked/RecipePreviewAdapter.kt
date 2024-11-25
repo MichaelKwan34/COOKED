@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.group34.cooked.models.Recipe
 
@@ -34,6 +35,20 @@ class RecipePreviewAdapter(
 
             itemView.setOnClickListener {
                 onItemClick(recipe)
+            }
+
+            val imageUri = recipe.photo
+            // Log.d("DetailedRecipeActivity", "Image URI: $imageUri")
+            if (imageUri != null && imageUri.isNotEmpty()) {
+                Glide.with(context)
+                    .load(imageUri) // Load the image from URI
+                    .placeholder(R.drawable.outline_photo_camera_black_24) // Default image while loading
+                    .error(R.drawable.outline_photo_camera_black_24) // Image if loading fails
+                    .override(112, 112)
+                    .centerCrop()
+                    .into(imageView) // Target ImageView
+            } else {
+                imageView.setImageResource(R.drawable.outline_photo_camera_black_24)
             }
 
             // setting the tag colours and text
@@ -81,7 +96,7 @@ class RecipePreviewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recipe_preview_item, parent, false)
-        Log.d("RecipeAdapter", "onCreateViewHolder called")
+        // Log.d("RecipeAdapter", "onCreateViewHolder called")
         return RecipeViewHolder(view)
     }
 

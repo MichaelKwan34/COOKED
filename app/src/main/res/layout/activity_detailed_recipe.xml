@@ -92,9 +92,9 @@
                         android:textSize="20sp"
                         />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/share_icon_button"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity = "center"
                         android:padding="1dp"
@@ -106,9 +106,9 @@
                         app:iconTint="@android:color/black"
                         />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/save_icon_button"
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_gravity = "center"
                         android:layout_height="wrap_content"
                         android:padding="1dp"

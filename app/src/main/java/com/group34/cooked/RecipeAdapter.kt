@@ -47,10 +47,8 @@ class RecipeAdapter<T>(
         return when (viewType) {
             VIEW_TYPE_INGREDIENT -> {
                 val view = inflater.inflate(R.layout.ingredient_list_item, parent, false)
-
                 val deleteButton: ImageView = view.findViewById(R.id.ingredient_item_delete)
                 deleteButton.visibility = View.GONE
-
                 IngredientViewHolder(view)
             }
             VIEW_TYPE_INSTRUCTION -> {

@@ -4,6 +4,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#FFFFFF"
@@ -15,13 +16,14 @@
         android:orientation="horizontal">
 
         <!-- Recipe Image -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/recipe_image"
-            android:background="#666666"
-            android:layout_marginLeft="10dp"
             android:layout_width="112dp"
             android:layout_height="112dp"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="center"
+            android:background="#666666"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Custom"
             android:layout_weight="0" />
 
         <!-- Corresponding Recipe Text  -->

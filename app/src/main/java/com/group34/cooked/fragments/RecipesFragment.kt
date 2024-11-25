@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.group34.cooked.DetailedRecipeActivity
+import com.group34.cooked.NewRecipeActivity
 import com.group34.cooked.R
 import com.group34.cooked.RecipePreviewAdapter
 import com.group34.cooked.RecipeViewModel
@@ -32,7 +34,7 @@ class RecipesFragment : Fragment(R.layout.fragment_recipes) {
             context = requireContext(),
             // this will launch the recipe details page as an activity
             onItemClick = { recipe ->
-                Log.d("RecipePreviewAdapter", "Recipe clicked: $recipe")
+                //Log.d("RecipePreviewAdapter", "Recipe clicked: $recipe")
                 val intent = Intent(requireContext(), DetailedRecipeActivity::class.java)
                 intent.putExtra("recipe_id", recipe.id)
                 startActivity(intent)
@@ -49,6 +51,10 @@ class RecipesFragment : Fragment(R.layout.fragment_recipes) {
         viewModel.observeUserSavedRecipes(userId)
         viewModel.savedRecipes.observe(viewLifecycleOwner) { recipes ->
             recipePreviewAdapter.submitList(recipes)
+        }
+        val btnAddRecipe = view.findViewById<Button>(R.id.btn_add_recipe)
+        btnAddRecipe.setOnClickListener {
+            startActivity(Intent(context, NewRecipeActivity::class.java))
         }
     }
 
