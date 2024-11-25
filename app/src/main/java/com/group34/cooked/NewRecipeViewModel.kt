@@ -1,16 +1,16 @@
 package com.group34.cooked
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentReference
 import com.group34.cooked.models.Ingredient
 import com.group34.cooked.models.Instruction
 import com.group34.cooked.models.Recipe
+import com.group34.cooked.models.RecipeCreationStatus
 
 class NewRecipeViewModel(
     private val imageRepository: ImageRepository = ImageRepository(),
@@ -105,16 +105,23 @@ class NewRecipeViewModel(
 
     // Returns a task that adds the recipe to the firestore
     // Use the return to check if add is successful or not
-    fun saveRecipeToFireStore(): Task<DocumentReference> {
-        // Add user id to the recipe
-        setCreatorId(FirebaseAuth.getInstance().currentUser!!.uid)
+    fun saveRecipeToFireStore(status: RecipeCreationStatus): Task<DocumentReference> {
+        setStatus(status.toString())
 
-        imageRepository.uploadImage(
-            _photoBitmap.value,
-            onSuccess = { uri -> setPhotoUri(uri) },
-            onFailure = { e -> Log.e("Firebase", "Error uploading image: ", e) }
-        )
+        // Save recipe without image
+        if (_photoBitmap.value == null) {
+            return recipeRepository.saveRecipe(_recipe.value!!)
+        }
 
-        return recipeRepository.saveRecipe(recipe.value!!)
+        // Save recipe with image
+        val uriTask = imageRepository.uploadImage(_photoBitmap.value)
+        return uriTask.continueWithTask { task ->
+            if (task.isSuccessful) {
+                setPhotoUri(task.result.toString())
+                recipeRepository.saveRecipe(_recipe.value!!)
+            } else {
+                Tasks.forException(Exception("Error saving recipe with image: ${task.exception}"))
+            }
+        }
     }
 }

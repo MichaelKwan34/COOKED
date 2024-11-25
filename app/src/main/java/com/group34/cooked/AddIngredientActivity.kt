@@ -2,13 +2,11 @@ package com.group34.cooked
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import com.group34.cooked.SpinnerAdapter.createDefaultSpinnerAdapter
 import com.group34.cooked.models.Ingredient
 import com.group34.cooked.models.Measurement
 import com.group34.cooked.models.MeasurementUnit
@@ -73,27 +71,8 @@ class AddIngredientActivity : AppCompatActivity(R.layout.activity_add_ingredient
 
     private fun initMeasurementSpinner() {
         val measurementUnits = MeasurementUnit.entries.map { getFullName(it) }.toTypedArray()
-
-        // Create an ArrayAdapter using the measurement array and a default spinner layout
-        applicationContext?.let {
-            ArrayAdapter(
-                it,
-                android.R.layout.simple_spinner_item,
-                measurementUnits
-            ).also { adapter ->
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spUnit.adapter = adapter
-
-                // Handle spinner item selection
-                spUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        selectUnit = measurementUnits[position]
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                }
-            }
+        createDefaultSpinnerAdapter(this, measurementUnits, spUnit) { unit ->
+            selectUnit = unit
         }
     }
 }
