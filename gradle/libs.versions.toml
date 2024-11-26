@@ -17,6 +17,7 @@ firebaseAuthKtx = "23.1.0"
 materialVersion = "1.9.0"
 sendgridJava = "5.0.0-rc.1"
 kotlinPlugin = "1.8.10"
+firebaseDatabaseKtx = "21.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 material-v190 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 sendgrid-java = { group = "com.sendgrid", name = "sendgrid-java", version.ref = "sendgridJava" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

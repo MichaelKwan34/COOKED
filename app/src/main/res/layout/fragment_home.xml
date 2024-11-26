@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5"
-    android:scrollbars="none">
+    android:background="#F5F5F5">
 
     <!-- Fixed Home Section -->
     <RelativeLayout
@@ -24,241 +23,159 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- Scrollable Content Section -->
-    <androidx.core.widget.NestedScrollView
+    <!-- Saved Recipes Section -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginTop="15dp"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        android:background="@color/white">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@string/saved_recipes_header"
+            android:textStyle="bold"
+            android:textSize="22dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:drawableEnd="@android:drawable/arrow_down_float"
+            />
 
-            <!-- Saved Recipes Section -->
+        <!-- Horizontal Scrollable Images -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:scrollbars="none"
+            android:fadeScrollbars="false">
+
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:layout_marginTop="15dp"
-                android:paddingTop="10dp"
-                android:orientation="vertical"
-                android:background="@color/white">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/saved_recipes_header"
-                    android:textStyle="bold"
-                    android:textSize="22dp"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="@color/black"
-                    android:drawableEnd="@android:drawable/arrow_down_float"
-                    />
+                <ImageView
+                    android:layout_width="127dp"
+                    android:layout_height="124dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:layout_marginRight="15dp" />
 
-                <!-- Horizontal Scrollable Images -->
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:scrollbars="none"
-                    android:fadeScrollbars="false">
+                <ImageView
+                    android:layout_width="127dp"
+                    android:layout_height="124dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:layout_marginRight="15dp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="127dp"
-                            android:layout_height="124dp"
-                            android:background="@drawable/rounded_edittext"
-                            android:layout_marginRight="15dp" />
-
-                        <ImageView
-                            android:layout_width="127dp"
-                            android:layout_height="124dp"
-                            android:background="@drawable/rounded_edittext"
-                            android:layout_marginRight="15dp" />
-
-                        <ImageView
-                            android:layout_width="127dp"
-                            android:layout_height="124dp"
-                            android:background="@drawable/rounded_edittext"
-                            android:layout_marginRight="15dp" />
-                    </LinearLayout>
-                </HorizontalScrollView>
+                <ImageView
+                    android:layout_width="127dp"
+                    android:layout_height="124dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:layout_marginRight="15dp" />
             </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
 
-            <!-- Shopping List Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:layout_marginTop="15dp"
-                android:paddingTop="10dp"
-                android:orientation="vertical"
-                android:background="#88E3FF">
+    <!-- Shopping List Section -->
+    <LinearLayout
+        android:id="@+id/open_shopping_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginTop="15dp"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        android:background="#88E3FF">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/shopping_list_header"
-                    android:textStyle="bold"
-                    android:textSize="22dp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="10dp"
-                    android:drawableEnd="@android:drawable/arrow_down_float"
-                    />
-            </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/shopping_list_header"
+            android:textStyle="bold"
+            android:textSize="22dp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="10dp"
+            android:drawableEnd="@android:drawable/arrow_down_float"
+            />
+    </LinearLayout>
 
-            <!-- Vertically Scrollable Items -->
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/white">
+    <!-- Shopping List Items as ListView -->
+    <ListView
+        android:id="@+id/shopping_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="515px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/white"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+    <!-- Sort Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/white">
 
-                    <!-- Item #1 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <CheckBox
-                            android:id="@+id/checkBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/cardview_dark_background" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="2 lbs Spaghetti Pasta" />
-                    </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort By"
+            android:textColor="@color/black"
+            android:drawableEnd="@android:drawable/arrow_down_float"
+            android:background="@android:color/transparent" />
 
-                    <!-- Item #2 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/cardview_dark_background" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Bottle of Olive Oil" />
-                    </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-                    <!-- Item #3 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/cardview_dark_background" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="2 lbs Lean Ground Beef" />
-                    </LinearLayout>
+        <Button
+            android:id="@+id/add_to_pantry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Checked to Pantry"
+            android:textColor="@color/black"
+            android:background="@android:color/transparent"
+            />
+    </LinearLayout>
 
-                    <!-- Item #4 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <CheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/cardview_dark_background" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="1 28oz Can Crushed Tomatoes" />
-                    </LinearLayout>
+    <!-- Pantry Section -->
+    <LinearLayout
+        android:id="@+id/open_pantry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#CEB5FA"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp">
 
-                </LinearLayout>
-            </ScrollView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@android:drawable/arrow_down_float"
+            android:text="@string/pantry_header"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
-            <!-- Sort Button -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/white">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sort By"
-                    android:textColor="@color/black"
-                    android:drawableEnd="@android:drawable/arrow_down_float"
-                    android:background="@android:color/transparent" />
-            </LinearLayout>
-
-
-            <!--    Pantry Section     -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:layout_marginTop="15dp"
-                android:paddingTop="10dp"
-                android:orientation="vertical"
-                android:background="@color/white"
-                android:paddingBottom="10dp"
-                >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pantry_header"
-                    android:textStyle="bold"
-                    android:textSize="22dp"
-                    android:textColor="@color/black"
-                    android:drawableEnd="@android:drawable/arrow_down_float"
-                    />
-                <View
-                    android:id="@+id/underline"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_above="@id/tab"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="15dp"
-                    />
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-    </androidx.core.widget.NestedScrollView>
+    <ListView
+        android:id="@+id/pantry_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="515px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/white" />
 </LinearLayout>
